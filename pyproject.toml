@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yr-weather"
+dynamic = ["version"]
+authors = [
+    { name = "ZeroWave022" }
+]
+description = "Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "Typing :: Typed"
+]
+dependencies = [
+    "requests",
+    "requests-cache"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ZeroWave022/yr-weather"
+"Bug Tracker" = "https://github.com/ZeroWave022/yr-weather/issues"
+
+[tool.setuptools.dynamic]
+version = { attr = "yr_weather.__version__" }
