@@ -19,6 +19,7 @@ Using `my_client`, you can receive forecasts for specified locations, get the ai
 
 from .locationforecast import Locationforecast
 from .radar import Radar
+from .textforecast import Textforecast
 
 __version__ = "0.1.0"
 __author__ = "ZeroWave022"
