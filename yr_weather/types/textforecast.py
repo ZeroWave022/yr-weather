@@ -22,3 +22,11 @@ TimedForecast = TypedDict("TimedForecast", {
 class TextForecasts(TypedDict):
     meta: Meta
     time: List[TimedForecast]
+
+class TextArea(TypedDict):
+    id: str
+    areaDesc: str
+    polygon: str
+
+class TextAreas(TypedDict):
+    area: List[TextArea]
