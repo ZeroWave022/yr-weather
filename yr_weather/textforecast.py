@@ -5,7 +5,7 @@ from .base import BaseClient
 from datetime import datetime
 import xmltodict
 
-from .textforecasttypes import TextForecasts
+from .types.textforecasttypes import TextForecasts
 
 class Textforecast(BaseClient):
     """A client for interacting with the Yr Textforecast API."""

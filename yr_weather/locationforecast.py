@@ -3,8 +3,9 @@ from requests_cache import CachedSession
 from typing import Optional, Literal, Union
 
 from .base import BaseClient
-from .completeforecast import CompleteForecast, ForecastUnits
-from .compactforecast import CompactForecast, ForecastInstantDetails
+from .types.completeforecast import CompleteForecast, ForecastUnits
+from .types.compactforecast import CompactForecast, ForecastInstantDetails
+
 
 class Locationforecast(BaseClient):
     """A client for interacting with the Yr Locationforecast API.
