@@ -21,7 +21,8 @@ classifiers = [
 ]
 dependencies = [
     "requests",
-    "requests-cache"
+    "requests-cache",
+    "xmltodict"
 ]
 
 [project.urls]
