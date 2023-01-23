@@ -34,8 +34,13 @@ class Textforecast(BaseClient):
         
         request = self.session.get(URL)
 
-        forecasts: TextForecasts = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")["textforecast"]
-
+        try:
+            parsed = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")
+        except:
+            warnings.warn("Parsing XML failed (this could be caused by a non-200 status code).\nFalling back to response text.")
+            return request.text
+        
+        forecasts: TextForecasts = parsed["textforecast"]
         return forecasts
 
     def get_areas(self, area_type: Literal["land", "sea", "coast"]) -> TextAreas:
