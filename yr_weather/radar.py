@@ -4,7 +4,7 @@ from typing import Optional, Literal, Union, get_args
 from .base import BaseClient
 from datetime import datetime
 
-from .types.radarliterals import RadarOptions, RadarStatus, AreaLiteral, TypeLiteral, ContentLiteral
+from .types.radar import RadarOptions, RadarStatus, AreaLiteral, TypeLiteral, ContentLiteral
 
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
