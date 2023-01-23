@@ -11,6 +11,9 @@ headers = {
 my_client = yr_weather.Locationforecast(headers=headers)
 ```
 
+For valid user agents, please see:
+https://api.met.no/doc/TermsOfService
+
 Using `my_client`, you can receive forecasts for specified locations, get the air temperature, and more.
 """
 
