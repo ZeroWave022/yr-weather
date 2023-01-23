@@ -13,7 +13,19 @@ class Textforecast(BaseClient):
     def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> TextForecasts:
         super().__init__(headers, use_cache)
 
-    def get_forecasts(self, forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]):
+    def get_forecasts(self, forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]) -> TextForecasts:
+        """Get text forcasts for a selected area.
+
+        Parameters
+        ----------
+        forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]
+            One of the possible forecast areas.
+        
+        Returns
+        -------
+        TextForecasts
+            A typed dict with text forecasts for the selected area, defined in the forecast parameter.
+        """
         forecast_types = ["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]
         if forecast not in forecast_types:
             raise ValueError(f"The 'forecast' argument must be one of the following: {', '.join(forecast_types)}.")
