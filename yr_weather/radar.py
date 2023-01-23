@@ -4,7 +4,7 @@ from typing import Optional, Literal, Union, get_args
 from .base import BaseClient
 from datetime import datetime
 
-from .radarliterals import AreaLiteral, TypeLiteral, ContentLiteral
+from .radarliterals import RadarOptions, RadarStatus, AreaLiteral, TypeLiteral, ContentLiteral
 
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
@@ -94,5 +94,38 @@ class Radar(BaseClient):
         
         return self.session.get(URL, stream=True)
     
-    def get_available_radars(self):
-        pass
+    def get_available_radars(self) -> RadarOptions:
+        """Get a dict of available typed of radars.
+
+        This function retrieves all types of radars, as well as which areas they are available in.
+        The dict also includes available types of content (image or animation).
+
+        Returns
+        -------
+        RadarOptions
+            A TypedDict with available radars and additional info.
+        """
+        URL = self._baseURL + "radar/2.0/radaroptions"
+
+        request = self.session.get(URL)
+
+        options: RadarOptions = request.json()
+
+        return options
+
+    def get_status(self) -> RadarStatus:
+        """Get the operational status of all radars.
+        
+        Returns
+        -------
+        RadarStatus
+            A TypedDict with statuses of radars.
+        """
+        URL = self._baseURL + "radar/2.0/status"
+
+        request = self.session.get(URL)
+
+        status: RadarStatus = request.json()
+
+        return status
+
