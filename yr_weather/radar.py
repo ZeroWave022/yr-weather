@@ -7,7 +7,7 @@ from datetime import datetime
 from .radarliterals import AreaLiteral, TypeLiteral, ContentLiteral
 
 class Radar(BaseClient):
-    """A class for interacting with the Yr Radar API."""
+    """A client for interacting with the Yr Radar API."""
     def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> None:
         super().__init__(headers, use_cache)
 
