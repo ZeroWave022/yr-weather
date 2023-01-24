@@ -21,5 +21,5 @@ from .locationforecast import Locationforecast
 from .radar import Radar
 from .textforecast import Textforecast
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "ZeroWave022"
