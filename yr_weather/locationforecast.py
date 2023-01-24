@@ -35,6 +35,8 @@ class Locationforecast(BaseClient):
             raise ValueError("A custom 'User-Agent' property is required in the 'headers' dict.")
         
         super().__init__(headers, use_cache)
+
+        self._baseURL += "locationforecast/2.0/"
             
     def get_forecast(self, lat: float, lon: float, forecast_type: Optional[Literal["complete", "compact"]] = "complete") -> Union[CompleteForecast, CompactForecast]:
         """Retrieve a complete or compact forecast for a selected location.
@@ -58,7 +60,7 @@ class Locationforecast(BaseClient):
         if forecast_type not in ["complete", "compact"]:
             raise ValueError("Value of forecast_type must be 'complete', or 'compact'.\nNote that 'classic' is not supported, as it's obsolete.")
         
-        request = self.session.get(self._baseURL + f"locationforecast/2.0/{forecast_type}?lat={lat}&lon={lon}")
+        request = self.session.get(self._baseURL + f"{forecast_type}?lat={lat}&lon={lon}")
 
         if forecast_type == "complete":
             weatherData: CompleteForecast = request.json()
@@ -87,7 +89,7 @@ class Locationforecast(BaseClient):
             The air temperature, given in the current scale used by the Yr Locationforecast API (this is normally degrees Celsius).
         """
 
-        URL = self._baseURL + f"locationforecast/2.0/compact?lat={lat}&lon={lon}"
+        URL = self._baseURL + f"compact?lat={lat}&lon={lon}"
         
         if altitude:
             if type(altitude) != int:
@@ -119,7 +121,7 @@ class Locationforecast(BaseClient):
             A typed dict with data received from the API.
         """
 
-        URL = self._baseURL + f"locationforecast/2.0/complete?lat={lat}&lon={lon}"
+        URL = self._baseURL + f"complete?lat={lat}&lon={lon}"
         
         if altitude:
             if type(altitude) != int:
@@ -142,7 +144,7 @@ class Locationforecast(BaseClient):
             A typed dict with units currently used.
         """
 
-        request = self.session.get(self._baseURL + "locationforecast/2.0/complete?lat=0&lon=0")
+        request = self.session.get(self._baseURL + "complete?lat=0&lon=0")
 
         data: CompleteForecast = request.json()
         units: ForecastUnits = data["properties"]["meta"]["units"]

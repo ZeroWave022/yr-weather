@@ -11,6 +11,8 @@ class Radar(BaseClient):
     def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> None:
         super().__init__(headers, use_cache)
 
+        self._baseURL += "radar/2.0/"
+
     def get_radar(self, area: AreaLiteral, radar_type: TypeLiteral, content: Optional[Literal["image", "animation"]] = "image", time: Optional[str] = None) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
@@ -83,7 +85,7 @@ class Radar(BaseClient):
         if (content not in ["image", "animation"]):
             raise ValueError("The 'content' argument must be 'image' or 'animation'.")
 
-        URL = self._baseURL + f"radar/2.0/?area={area}&type={radar_type}&content={content}"
+        URL = self._baseURL + f"?area={area}&type={radar_type}&content={content}"
 
         if time:
             try:
@@ -105,7 +107,7 @@ class Radar(BaseClient):
         RadarOptions
             A TypedDict with available radars and additional info.
         """
-        URL = self._baseURL + "radar/2.0/radaroptions"
+        URL = self._baseURL + "radaroptions"
 
         request = self.session.get(URL)
 
@@ -121,7 +123,7 @@ class Radar(BaseClient):
         RadarStatus
             A TypedDict with statuses of radars.
         """
-        URL = self._baseURL + "radar/2.0/status"
+        URL = self._baseURL + "status"
 
         request = self.session.get(URL)
 

@@ -13,6 +13,8 @@ class Textforecast(BaseClient):
     def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> TextForecasts:
         super().__init__(headers, use_cache)
 
+        self._baseURL += "textforecast/2.0/"
+
     def get_forecasts(self, forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]) -> TextForecasts:
         """Get text forcasts for a selected area.
 
@@ -30,7 +32,7 @@ class Textforecast(BaseClient):
         if forecast not in forecast_types:
             raise ValueError(f"The 'forecast' argument must be one of the following: {', '.join(forecast_types)}.")
         
-        URL = self._baseURL + f"textforecast/2.0/?forecast={forecast}"
+        URL = self._baseURL + f"?forecast={forecast}"
         
         request = self.session.get(URL)
 
@@ -60,7 +62,7 @@ class Textforecast(BaseClient):
         if area_type not in area_types:
             raise ValueError(f"The 'area_type' argument must be one of the following: {', '.join(area_types)}.")
         
-        URL = self._baseURL + f"textforecast/2.0/areas?type={area_type}"
+        URL = self._baseURL + f"areas?type={area_type}"
 
         request = self.session.get(URL)
         
