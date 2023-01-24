@@ -24,11 +24,14 @@ Supported products are:
 - Textforecast (v2.0)
 
 # Installing
-To use `yr-weather`, simply install it using `pip` like so (Windows):
+To use `yr-weather`, simply install it using `pip`.
+
+For Windows:
 ```
 pip install yr-weather
 ```
-For Linux/macOS, run:
+
+For Linux/macOS:
 ```
 python3 -m pip install yr-weather
 ```
