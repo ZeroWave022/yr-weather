@@ -23,16 +23,16 @@ class BaseClient():
     def set_headers(self, headers: dict) -> dict:
         """Set new headers of the client.
         
-        This will override any old headers, and replace them with the new headers from the `headers` parameter.
+        This will override any old headers, and replace them with the new headers from the ``headers`` parameter.
 
         Parameters
         ----------
-        headers: dict
+        headers: :class:`dict`
             The new headers, which will override the old ones.
         
         Returns
         -------
-        dict
+        :class:`dict`
             The headers which were set.
         """
         if type(headers) != dict:
@@ -50,12 +50,12 @@ class BaseClient():
 
         Parameters
         ----------
-        toggle: bool
+        toggle: :class:`bool`
             Whether cache should be used, or whether to disable it.
         
         Returns
         -------
-        bool
+        :class:`bool`
             The new state of the cache (on/off).
         """
         if (toggle):

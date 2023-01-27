@@ -12,22 +12,23 @@ class Locationforecast(BaseClient):
 
     The client has multiple functions which can be used for retrieving data from the API.
     
-    It must be initialized with a 'headers' dict, which at least includes a User-Agent.
-    The headers will be used with the requests library.
+    It must be initialized with a ``headers`` dict, which at least includes a User-Agent.
+    The headers will be used with the :mod:`requests` library.
     
     Example 1. Getting a location forecast for a specified location:
-    ```
-    import yr_weather
+    
+    .. code-block:: python
+        
+        import yr_weather
 
-    headers = {
-        "User-Agent": "Your User-Agent"
-    }
+        headers = {
+            "User-Agent": "Your User-Agent"
+        }
 
-    yr_client = yr_weather.Locationforecast(headers=headers)
+        yr_client = yr_weather.Locationforecast(headers=headers)
 
-    # Get weather data for Oslo, Norway.
-    weather_data = yr_client.get_forecast(59.91, 10.75)
-    ```
+        # Get weather data for Oslo, Norway.
+        weather_data = yr_client.get_forecast(59.91, 10.75)
     """
     
     def __init__(self, headers: dict, use_cache: Optional[bool] = True) -> None:
@@ -43,13 +44,13 @@ class Locationforecast(BaseClient):
 
         Parameters
         ----------
-        lat: float | int
+        lat: :class:`float` | :class:`int`
             The latitude of the location.
-        lon: float | int
+        lon: :class:`float` | :class:`int`
             The longitude of the location.
         forecast_type: Optional[Literal["complete", "compact"]]
             Optionally specify the type of forecast.
-            Possible values: "complete" or "compact".
+            Possible values: ``"complete"`` or ``"compact"``.
         
         Returns
         -------
@@ -76,17 +77,17 @@ class Locationforecast(BaseClient):
 
         Parameters
         ----------
-        lat: float | int
+        lat: :class:`float` | :class:`int`
             The latitude of the location.
-        lon: float | int
+        lon: :class:`float` | :class:`int`
             The longitude of the location.
-        altitude: Optional[int]
+        altitude: Optional[:class:`int`]
             The altitude of the location, given in whole meters.
         
         Returns
         -------
-        float
-            The air temperature, given in the current scale used by the Yr Locationforecast API (this is normally degrees Celsius).
+        :class:`float`
+            The air temperature, given in the current scale used by the Yr Locationforecast API (this is usually degrees Celsius).
         """
 
         URL = self._baseURL + f"compact?lat={lat}&lon={lon}"
@@ -108,11 +109,11 @@ class Locationforecast(BaseClient):
 
         Parameters
         ----------
-        lat: float | int
+        lat: :class:`float` | :class:`int`
             The latitude of the location.
-        lon: float | int
+        lon: :class:`float` | :class:`int`
             The longitude of the location.
-        altitude: Optional[int]
+        altitude: Optional[:class:`int`]
             The altitude of the location, given in whole meters.
         
         Returns
@@ -150,4 +151,3 @@ class Locationforecast(BaseClient):
         units: CompleteUnits = data["properties"]["meta"]["units"]
 
         return units
-

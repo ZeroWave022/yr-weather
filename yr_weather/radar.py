@@ -39,40 +39,41 @@ class Radar(BaseClient):
         --------
 
         Example 1: Basic usage:
-        ```
-        import yr_weather
-        
-        radar = yr_weather.Radar()
 
-        result = radar.get_radar("central_norway", "5level_reflectivity", "image")
+        .. code-block:: python
 
-        with open("image.png", "wb") as f:
-            for chunk in result:
-                f.write(chunk)
-        ```
-        
-        Example 2. Getting a radar image from a few hours back:
-        ```
-        import yr_weather
-        from datetime import datetime
-        
-        radar = yr_weather.Radar()
+            import yr_weather
 
-        # Replace with your time
-        time_now = datetime(2023, 1, 20, 12, 00, 00)
-        time_str = time_now.isoformat(timespec="seconds") + "Z"
+            radar = yr_weather.Radar()
 
-        result = radar.get_radar("central_norway", "5level_reflectivity", "image", time_str)
+            result = radar.get_radar("central_norway", "5level_reflectivity", "image")
 
-        if result.status_code != 404:
             with open("image.png", "wb") as f:
                 for chunk in result:
                     f.write(chunk)
-        else:
-            print("Couldn't get this radar image/animation!")
-        ```
+
+        Example 2. Getting a radar image from a few hours back:
+
+        .. code-block:: python
+
+            import yr_weather
+            from datetime import datetime
+
+            radar = yr_weather.Radar()
+
+            # Replace with your time
+            time_now = datetime(2023, 1, 20, 12, 00, 00)
+            time_str = time_now.isoformat(timespec="seconds") + "Z"
+
+            result = radar.get_radar("central_norway", "5level_reflectivity", "image", time_str)
+
+            if result.status_code != 404:
+                with open("image.png", "wb") as f:
+                    for chunk in result:
+                        f.write(chunk)
+            else:
+                print("Couldn't get this radar image/animation!")
         """
-        
         area_args = list(get_args(RadarArea))
         type_args = list(get_args(RadarType))
         
