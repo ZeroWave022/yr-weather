@@ -1,6 +1,6 @@
 from typing import Literal, TypedDict, List, Optional
 
-AreaLiteral = Literal[
+RadarArea = Literal[
     "central_norway",
     "eastern_norway",
     "finnmark",
@@ -18,9 +18,9 @@ AreaLiteral = Literal[
     "xband"
 ]
 
-ContentLiteral = Literal["image", "animation"]
+RadarContentType = Literal["image", "animation"]
 
-TypeLiteral = Literal[
+RadarType = Literal[
     "5level_reflectivity",
     "accumulated_01h",
     "accumulated_02h",
@@ -53,8 +53,8 @@ TypeLiteral = Literal[
 ]
 
 class AvailableAreas(TypedDict):
-    area: List[AreaLiteral]
-    content: ContentLiteral
+    area: List[RadarArea]
+    content: RadarContentType
 
 # Use alternative syntax to allow for properties starting with decimal.
 RadarOptions = TypedDict("RadarOptions", {
@@ -94,7 +94,7 @@ class AreaStatus(TypedDict):
     DueDate: Optional[str]
     FaultCode: Optional[Literal["PS", "VP", "CO", "TE"]]
     Last: str
-    Products: List[AreaLiteral]
+    Products: List[RadarArea]
     Sitename: str
     Stability: str
 

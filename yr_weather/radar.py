@@ -4,7 +4,7 @@ from typing import Optional, Literal, Union, get_args
 from .base import BaseClient
 from datetime import datetime
 
-from .types.radar import RadarOptions, RadarStatus, AreaLiteral, TypeLiteral, ContentLiteral
+from .types.radar import RadarOptions, RadarStatus, RadarArea, RadarType, RadarContentType
 
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
@@ -13,7 +13,7 @@ class Radar(BaseClient):
 
         self._baseURL += "radar/2.0/"
 
-    def get_radar(self, area: AreaLiteral, radar_type: TypeLiteral, content: Optional[Literal["image", "animation"]] = "image", time: Optional[str] = None) -> requests.Response:
+    def get_radar(self, area: RadarArea, radar_type: RadarType, content: Optional[RadarContentType] = "image", time: Optional[str] = None) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
         For more information about what arguments are valid, please see:
@@ -21,11 +21,11 @@ class Radar(BaseClient):
 
         Parameters
         ----------
-        area: AreaLiteral
+        area: RadarArea
             A string of one the of the possible values for area, based on valid Radar Yr API literals.
-        radar_type: TypeLiteral
+        radar_type: RadarType
             A string of one of the possible values for type, based on valid Radar Yr API literals.
-        content: Optional[Literal["image", "animation"]]
+        content: Optional[RadarContentType]
             Either the string "image" or "animation", based on the desired result from the API.
         time: Optional[str]
             An optional string containing the time when the image was taken, provided in ISO 8601 format.
@@ -73,14 +73,14 @@ class Radar(BaseClient):
         ```
         """
         
-        area_args = list(get_args(AreaLiteral))
-        type_args = list(get_args(TypeLiteral))
+        area_args = list(get_args(RadarArea))
+        type_args = list(get_args(RadarType))
         
         if (area not in area_args):
-            raise ValueError(f"The 'area' argument must be one of the possible AreaLiterals: {area_args}")
+            raise ValueError(f"The 'area' argument must be one of the possible RadarAreas: {area_args}")
         
         if (radar_type not in type_args):
-            raise ValueError(f"The 'radar_type' argument must be one of the possible TypeLiterals: {type_args}")
+            raise ValueError(f"The 'radar_type' argument must be one of the possible RadarTypes: {type_args}")
         
         if (content not in ["image", "animation"]):
             raise ValueError("The 'content' argument must be 'image' or 'animation'.")
@@ -130,4 +130,3 @@ class Radar(BaseClient):
         status: RadarStatus = request.json()
 
         return status
-
