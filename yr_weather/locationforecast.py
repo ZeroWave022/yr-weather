@@ -3,8 +3,8 @@ from requests_cache import CachedSession
 from typing import Optional, Literal, Union
 
 from .base import BaseClient
-from .types.completeforecast import CompleteForecast, ForecastUnits
-from .types.compactforecast import CompactForecast, ForecastInstantDetails
+from .types.completeforecast import CompleteForecast, CompleteUnits
+from .types.compactforecast import CompactForecast, CompactInstantDetails
 
 
 class Locationforecast(BaseClient):
@@ -101,7 +101,7 @@ class Locationforecast(BaseClient):
 
         return float(data["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"])
     
-    def get_instant_data(self, lat: float, lon: float, altitude: Optional[int] = None) -> ForecastInstantDetails:
+    def get_instant_data(self, lat: float, lon: float, altitude: Optional[int] = None) -> CompactInstantDetails:
         """Retrieve current weather information about a location.
 
         This includes air pressure, temperature, humidity, wind and more.
@@ -117,7 +117,7 @@ class Locationforecast(BaseClient):
         
         Returns
         -------
-        ForecastInstantDetails
+        CompactInstantDetails
             A typed dict with data received from the API.
         """
 
@@ -131,23 +131,23 @@ class Locationforecast(BaseClient):
         request = self.session.get(URL)
         data: CompleteForecast = request.json()
 
-        instant_data: ForecastInstantDetails = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
+        instant_data: CompactInstantDetails = data["properties"]["timeseries"][0]["data"]["instant"]["details"]
 
         return instant_data
 
-    def get_units(self) -> ForecastUnits:
+    def get_units(self) -> CompleteUnits:
         """Retrieve a list of units used by the Yr Locationforecast API.
 
         Returns
         -------
-        ForecastUnits
+        CompleteUnits
             A typed dict with units currently used.
         """
 
         request = self.session.get(self._baseURL + "complete?lat=0&lon=0")
 
         data: CompleteForecast = request.json()
-        units: ForecastUnits = data["properties"]["meta"]["units"]
+        units: CompleteUnits = data["properties"]["meta"]["units"]
 
         return units
 

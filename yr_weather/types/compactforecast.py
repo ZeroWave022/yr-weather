@@ -1,6 +1,6 @@
 from typing import TypedDict, List
 
-class ForecastUnits(TypedDict):
+class CompactUnits(TypedDict):
     air_pressure_at_sea_level: str
     air_temperature: str
     cloud_area_fraction: str
@@ -9,7 +9,7 @@ class ForecastUnits(TypedDict):
     wind_from_direction: str
     wind_speed: str
 
-class ForecastInstantDetails(TypedDict):
+class CompactInstantDetails(TypedDict):
     air_pressure_at_sea_level: float
     air_temperature: float
     cloud_area_fraction: float
@@ -17,42 +17,42 @@ class ForecastInstantDetails(TypedDict):
     wind_from_direction: float
     wind_speed: float
 
-class ForecastFutureSummary(TypedDict):
+class CompactFutureSummary(TypedDict):
     symbol_code: str
 
-class ForecastFutureDetails(TypedDict):
+class CompactFutureDetails(TypedDict):
     precipitation_amount: float
 
-class ForecastInstantData(TypedDict):
-    details: ForecastInstantDetails
+class CompactInstantData(TypedDict):
+    details: CompactInstantDetails
 
-class ForecastFutureData(TypedDict):
-    summary: ForecastFutureSummary
-    details: ForecastFutureDetails
+class CompactFutureData(TypedDict):
+    summary: CompactFutureSummary
+    details: CompactFutureDetails
 
-class ForecastTimeData(TypedDict):
-    instant: ForecastInstantData
-    next_1_hours: ForecastFutureData
-    next_6_hours: ForecastFutureData
-    next_12_hours: ForecastFutureData
+class CompactTimeData(TypedDict):
+    instant: CompactInstantData
+    next_1_hours: CompactFutureData
+    next_6_hours: CompactFutureData
+    next_12_hours: CompactFutureData
 
-class ForecastTime(TypedDict):
+class CompactTime(TypedDict):
     time: str
-    data: ForecastTimeData
+    data: CompactTimeData
 
-class ForecastMeta(TypedDict):
+class CompactMeta(TypedDict):
     updated_at: str
-    units: ForecastUnits
+    units: CompactUnits
 
-class ForecastProperties(TypedDict):
-    meta: ForecastMeta
-    timeseries: List[ForecastTime]
+class CompactProperties(TypedDict):
+    meta: CompactMeta
+    timeseries: List[CompactTime]
 
-class ForecastGeometry(TypedDict):
+class CompactGeometry(TypedDict):
     type: str
     coordinates: List[int]
 
 class CompactForecast(TypedDict):
     type: str
-    geometry: ForecastGeometry
-    properties: ForecastProperties
+    geometry: CompactGeometry
+    properties: CompactProperties

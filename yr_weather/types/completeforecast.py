@@ -1,6 +1,6 @@
 from typing import TypedDict, Union, List
 
-class ForecastUnits(TypedDict):
+class CompleteUnits(TypedDict):
     air_pressure_at_sea_level: str
     air_temperature: str
     air_temperature_max: str
@@ -17,7 +17,7 @@ class ForecastUnits(TypedDict):
     wind_from_direction: str
     wind_speed: str
 
-class ForecastInstantDetails(TypedDict):
+class CompleteInstantDetails(TypedDict):
     air_pressure_at_sea_level: float
     air_temperature: float
     cloud_area_fraction: float
@@ -31,67 +31,44 @@ class ForecastInstantDetails(TypedDict):
     wind_from_direction: float
     wind_speed: float
 
-class ForecastFutureSummary(TypedDict):
+class CompleteFutureSummary(TypedDict):
     symbol_code: str
 
-class ForecastFutureDetails(TypedDict):
+class CompleteFutureDetails(TypedDict):
     air_temperature_max: Union[float, None]
     air_temperature_min: Union[float, None]
     precipitation_amount: Union[float, None]
 
-class ForecastInstantData(TypedDict):
-    details: ForecastInstantDetails
+class CompleteInstantData(TypedDict):
+    details: CompleteInstantDetails
 
-class ForecastFutureData(TypedDict):
-    summary: ForecastFutureSummary
-    details: ForecastFutureDetails
+class CompleteFutureData(TypedDict):
+    summary: CompleteFutureSummary
+    details: CompleteFutureDetails
 
-class ForecastTimeData(TypedDict):
-    instant: ForecastInstantData
-    next_1_hours: ForecastFutureData
-    next_6_hours: ForecastFutureData
-    next_12_hours: ForecastFutureData
+class CompleteTimeData(TypedDict):
+    instant: CompleteInstantData
+    next_1_hours: CompleteFutureData
+    next_6_hours: CompleteFutureData
+    next_12_hours: CompleteFutureData
 
-class ForecastTime(TypedDict):
+class CompleteTime(TypedDict):
     time: str
-    data: ForecastTimeData
+    data: CompleteTimeData
 
-class ForecastMeta(TypedDict):
+class CompleteMeta(TypedDict):
     updated_at: str
-    units: ForecastUnits
+    units: CompleteUnits
 
-class ForecastProperties(TypedDict):
-    meta: ForecastMeta
-    timeseries: List[ForecastTime]
+class CompleteProperties(TypedDict):
+    meta: CompleteMeta
+    timeseries: List[CompleteTime]
 
-class ForecastGeometry(TypedDict):
+class CompleteGeometry(TypedDict):
     type: str
     coordinates: List[int]
 
 class CompleteForecast(TypedDict):
     type: str
-    geometry: ForecastGeometry
-    properties: ForecastProperties
-
-
-"""class CompleteForecast:
-    def __init__(self, data: dict) -> None:
-        self.type: str = data["type"]
-        self.geometry = ForecastGeometry(data["geometry"]["type"], data["geometry"]["coordinates"])
-        self.properties = ForecastProperties(data["properties"])
-        
-class ForecastGeometry:
-    def __init__(self, type: str, coordinates: list[int]) -> None:
-        self.type = type
-        self.coordinates = coordinates
-
-
-class ForecastProperties:
-    def __init__(self, props):
-        self.meta = ForecastMeta(props["meta"])
-
-class ForecastMeta:
-    def __init__(self, meta):
-        self.updated_at = meta["updated_at"]
-        self.units = meta["units"]
-        print(meta)"""
+    geometry: CompleteGeometry
+    properties: CompleteProperties
