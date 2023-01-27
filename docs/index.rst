@@ -27,6 +27,7 @@ Supported products are:
 * Locationforecast (v2.0)
 * Radar (v2.0)
 * Textforecast (v2.0)
+* Sunrise (v2.0)
 
 Installing
 ----------
@@ -94,8 +95,7 @@ A simple example follows (more features are available).
    #        "wind_speed_percentile_90": 0.7
    #    }
 
-All functions and classes are documented with docstrings.
-Further documentation will be made at a later point in time.
+All functions and classes are also documented with docstrings and typed, for the best developer experience.
 
 Caching
 ^^^^^^^
