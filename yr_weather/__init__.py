@@ -23,5 +23,5 @@ from .radar import Radar
 from .textforecast import Textforecast
 from .sunrise import Sunrise
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __author__ = "ZeroWave022"
