@@ -21,6 +21,7 @@ Using ``my_client``, you can receive forecasts for specified locations, get the 
 from .locationforecast import Locationforecast
 from .radar import Radar
 from .textforecast import Textforecast
+from .sunrise import Sunrise
 
 __version__ = "0.1.1"
 __author__ = "ZeroWave022"
