@@ -46,7 +46,7 @@ For specific API Products, check their separate section on the documentation:
 - [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/index.html)
 - [Sunrise](https://yr-weather.readthedocs.io/en/latest/sunrise/index.html)
 
-For the best developer experience, all functions and classes are also typed and documented with docstrings.
+For the best developer experience, all functions and classes are typed and documented with docstrings.
 
 ## Caching
 By default, the library makes a cache file named `yr_cache.sqlite` in the working directory.
