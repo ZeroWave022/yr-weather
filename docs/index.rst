@@ -14,7 +14,13 @@ Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
    :maxdepth: 2
    :caption: Contents
 
-   submodules
+   Home <self>
+   gettingstarted
+   locationforecast/index
+   textforecast/index
+   radar/index
+   sunrise/index
+   base
 
 **Available on** `PyPI <https://pypi.org/project/yr-weather>`_:
 
