@@ -13,7 +13,7 @@ class Radar(BaseClient):
 
         self._baseURL += "radar/2.0/"
 
-    def get_radar(self, area: RadarArea, radar_type: RadarType, content: Optional[RadarContentType] = "image", time: Optional[str] = None) -> requests.Response:
+    def get_radar(self, area: str, radar_type: str, content: Optional[RadarContentType] = "image", time: Optional[str] = None) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
         For more information about what arguments are valid, please see:
@@ -21,18 +21,18 @@ class Radar(BaseClient):
 
         Parameters
         ----------
-        area: RadarArea
+        area: :data:`.RadarArea`
             A string of one the of the possible values for area, based on valid Radar Yr API literals.
-        radar_type: RadarType
+        radar_type: :data:`.RadarType`
             A string of one of the possible values for type, based on valid Radar Yr API literals.
-        content: Optional[RadarContentType]
+        content: Optional[:data:`.RadarContentType`]
             Either the string "image" or "animation", based on the desired result from the API.
-        time: Optional[str]
+        time: Optional[:class:`str`]
             An optional string containing the time when the image was taken, provided in ISO 8601 format.
         
         Returns
         -------
-        requests.Response
+        :class:`requests.Response`
             A Response class, enabling for further saving or managing of the data received from the open stream.
 
         Examples
@@ -105,7 +105,7 @@ class Radar(BaseClient):
 
         Returns
         -------
-        RadarOptions
+        :class:`.RadarOptions`
             A TypedDict with available radars and additional info.
         """
         URL = self._baseURL + "radaroptions"
@@ -121,7 +121,7 @@ class Radar(BaseClient):
         
         Returns
         -------
-        RadarStatus
+        :class:`.RadarStatus`
             A TypedDict with statuses of radars.
         """
         URL = self._baseURL + "status"

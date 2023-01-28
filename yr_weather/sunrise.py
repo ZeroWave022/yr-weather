@@ -35,7 +35,7 @@ class Sunrise(BaseClient):
         
         Returns
         -------
-        SunriseData
+        :class:`.SunriseData`
             A typed dict containing sunrise data.
         """
         # Ensure correct variable types.
@@ -89,7 +89,7 @@ class Sunrise(BaseClient):
 
         Parameters
         ----------
-        detail: DetailLiteral
+        detail: :data:`.DetailLiteral`
             The detail/event to get data for. Must be one of the following:
             "high_moon", "low_moon", "moonphase", "solarmidnight", "solarnoon", "moonrise", "moonset", "sunrise", "sunset", "moonposition", "moonshadow"
         date: :class:`str`
