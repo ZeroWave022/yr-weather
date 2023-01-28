@@ -38,13 +38,13 @@ python3 -m pip install yr-weather
 ```
 
 # Getting started
-To get started, check out the [documentation](https://yr-weather.readthedocs.io/).
+To get started, check out the [documentation](https://yr-weather.readthedocs.io/en/latest/gettingstarted.html).
 
 For specific API Products, check their separate page on the documentation:
-- [Locationforecast](https://yr-weather.readthedocs.io/en/latest/locationforecast/locationforecast.html)
-- [Radar](https://yr-weather.readthedocs.io/en/latest/radar/radar.html)
-- [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/textforecast.html)
-- Sunrise
+- [Locationforecast](https://yr-weather.readthedocs.io/en/latest/locationforecast/index.html)
+- [Radar](https://yr-weather.readthedocs.io/en/latest/radar/index.html)
+- [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/index.html)
+- [Sunrise](https://yr-weather.readthedocs.io/en/latest/sunrise/index.html)
 
 All functions and classes are also documented with docstrings and typed, for the best developer experience.
 
