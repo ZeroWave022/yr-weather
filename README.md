@@ -40,13 +40,13 @@ python3 -m pip install yr-weather
 # Getting started
 To get started, check out the [documentation](https://yr-weather.readthedocs.io/en/latest/gettingstarted.html).
 
-For specific API Products, check their separate page on the documentation:
+For specific API Products, check their separate section on the documentation:
 - [Locationforecast](https://yr-weather.readthedocs.io/en/latest/locationforecast/index.html)
 - [Radar](https://yr-weather.readthedocs.io/en/latest/radar/index.html)
 - [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/index.html)
 - [Sunrise](https://yr-weather.readthedocs.io/en/latest/sunrise/index.html)
 
-All functions and classes are also documented with docstrings and typed, for the best developer experience.
+For the best developer experience, all functions and classes are also typed and documented with docstrings.
 
 ## Caching
 By default, the library makes a cache file named `yr_cache.sqlite` in the working directory.
