@@ -62,7 +62,7 @@ MET's Terms of Service encourage using caching, to avoid extra load on the netwo
 - [ ] Improve support for earlier Python versions
 
 # License
-This project is licensed under the [GNU General Public License v3](https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE).
+This project is licensed under the [Apache License 2.0](https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE).
 
 # Disclaimer
 `yr-weather` is not associated with yr.no or the Norwegian Meteorological Institute (MET).
