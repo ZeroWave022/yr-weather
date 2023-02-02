@@ -23,6 +23,7 @@ Supported products are:
 - Radar (v2.0)
 - Textforecast (v2.0)
 - Sunrise (v2.0)
+- Geosatellite (v1.4)
 
 # Installing
 To use `yr-weather`, simply install it using `pip`.
@@ -45,6 +46,7 @@ For specific API Products, check their separate section on the documentation:
 - [Radar](https://yr-weather.readthedocs.io/en/latest/radar/index.html)
 - [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/index.html)
 - [Sunrise](https://yr-weather.readthedocs.io/en/latest/sunrise/index.html)
+- [Geosatellite](https://yr-weather.readthedocs.io/en/latest/geosatellite/index.html)
 
 For the best developer experience, all functions and classes are typed and documented with docstrings.
 
