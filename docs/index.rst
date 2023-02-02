@@ -20,6 +20,7 @@ Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
    textforecast/index
    radar/index
    sunrise/index
+   geosatellite/index
    base
 
 **Available on** `PyPI <https://pypi.org/project/yr-weather>`_:
