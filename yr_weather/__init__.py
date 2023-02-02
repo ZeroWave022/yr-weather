@@ -24,5 +24,5 @@ from .textforecast import Textforecast
 from .sunrise import Sunrise
 from .geosatellite import Geosatellite
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 __author__ = "ZeroWave022"
