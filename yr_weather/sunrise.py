@@ -89,8 +89,7 @@ class Sunrise(BaseClient):
         Parameters
         ----------
         detail: :data:`.DetailLiteral`
-            The detail/event to get data for. Must be one of the following:
-            "high_moon", "low_moon", "moonphase", "solarmidnight", "solarnoon", "moonrise", "moonset", "sunrise", "sunset", "moonposition", "moonshadow"
+            The detail/event to get data for. See :data:`.DetailLiteral` for valid values.
         date: :class:`str`
             A date formatted in ISO 8601 format, like so: `YYYY-MM-DD`.
         lat: :class:`float` | :class:`int`
