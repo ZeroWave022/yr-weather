@@ -10,12 +10,12 @@ from .types.textforecast import TextForecasts, TextAreas
 
 class Textforecast(BaseClient):
     """A client for interacting with the Yr Textforecast API."""
-    def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> TextForecasts:
+    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "textforecast/2.0/"
 
-    def get_forecasts(self, forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]) -> TextForecasts:
+    def get_forecasts(self, forecast: Literal["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]) -> Union[TextForecasts, str]:
         """Get text forcasts for a selected area.
 
         Parameters
@@ -25,8 +25,9 @@ class Textforecast(BaseClient):
         
         Returns
         -------
-        TextForecasts
+        TextForecasts | str
             A typed dict with text forecasts for the selected area, defined in the forecast parameter.
+            If XML conversion fails, the response text for the request is returned instead.
         """
         forecast_types = ["landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"]
         if forecast not in forecast_types:
@@ -45,7 +46,7 @@ class Textforecast(BaseClient):
         forecasts: TextForecasts = parsed["textforecast"]
         return forecasts
 
-    def get_areas(self, area_type: Literal["land", "sea", "coast"]) -> TextAreas:
+    def get_areas(self, area_type: Literal["land", "sea", "coast"]) -> Union[TextAreas, str]:
         """Get available areas and their polygons.
         
         Parameters
@@ -55,8 +56,9 @@ class Textforecast(BaseClient):
         
         Returns
         -------
-        TextAreas
+        TextAreas | str
             A typed dict with land, sea or coast areas, their polygons and names.
+            If XML conversion fails, the response text for the request is returned instead.
         """
         area_types = ["land", "sea", "coast"]
         if area_type not in area_types:
