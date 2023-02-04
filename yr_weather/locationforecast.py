@@ -1,5 +1,3 @@
-import requests
-from requests_cache import CachedSession
 from typing import Optional, Literal, Union
 
 from .base import BaseClient

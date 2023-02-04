@@ -1,6 +1,5 @@
 import requests
 from requests_cache import CachedSession
-from typing import Optional, Literal, Union
 
 class BaseClient():
     def __init__(self, headers: dict, use_cache: bool = True) -> None:

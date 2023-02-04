@@ -1,8 +1,5 @@
-import requests
-from requests_cache import CachedSession
-from typing import Optional, Literal, Union, get_args
+from typing import Literal, Union, get_args
 from .base import BaseClient
-from datetime import datetime
 import xmltodict
 import warnings
 

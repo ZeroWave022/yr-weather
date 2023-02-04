@@ -1,8 +1,7 @@
+import requests
 from typing import Optional, get_args
 from .base import BaseClient
 from datetime import datetime
-import warnings
-import requests
 
 from .types.sunrise import SunriseData, DetailLiteral
 
