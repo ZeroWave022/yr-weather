@@ -8,12 +8,12 @@ from .types.radar import RadarOptions, RadarStatus, RadarArea, RadarType, RadarC
 
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
-    def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> None:
+    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "radar/2.0/"
 
-    def get_radar(self, area: str, radar_type: str, content: Optional[RadarContentType] = "image", time: Optional[str] = None) -> requests.Response:
+    def get_radar(self, area: str, radar_type: str, content: RadarContentType = "image", time: Optional[str] = None) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
         For more information about what arguments are valid, please see:
@@ -25,10 +25,10 @@ class Radar(BaseClient):
             A string of one the of the possible values for area, based on valid Radar Yr API literals.
         radar_type: :data:`.RadarType`
             A string of one of the possible values for type, based on valid Radar Yr API literals.
-        content: Optional[:data:`.RadarContentType`]
-            Either the string "image" or "animation", based on the desired result from the API.
+        content: :data:`.RadarContentType`
+            Optional: Either the string "image" or "animation", based on the desired result from the API. Default is ``"image"``.
         time: Optional[:class:`str`]
-            An optional string containing the time when the image was taken, provided in ISO 8601 format.
+            An optional string containing the time when the image was taken, provided in ISO 8601 format. Default is :class:`None`.
         
         Returns
         -------
