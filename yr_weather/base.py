@@ -65,10 +65,10 @@ class BaseClient():
                     cache_control = True
                 )
                 self.session.headers = self._global_headers
-                return True
+            return True
         else:
             if type(self.session) != requests.Session:
                 self.session = requests.Session()
                 self.session.headers = self._global_headers
-                return False
+            return False
 
