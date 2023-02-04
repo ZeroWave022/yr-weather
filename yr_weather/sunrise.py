@@ -8,7 +8,7 @@ from .types.sunrise import SunriseData, DetailLiteral
 
 class Sunrise(BaseClient):
     """A client for interacting with the Yr Sunrise API."""
-    def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True):
+    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "sunrise/2.0/"
@@ -28,10 +28,10 @@ class Sunrise(BaseClient):
             The longitude of the location.
         offset: :class:`str`
             The timezone offset, given in the following format: `+HH:MM` or `-HH:MM`.
-        days_forward: :class:`int`
-            The number of future days which should be included.
+        days_forward: Optional[:class:`int`]
+            Optional: The number of future days which should be included. Default is :class:`None`.
         height: Optional[:class:`float` | :class:`int`]
-            The altitude above the ellipsoid in kilometers (km).
+            Optional: The altitude above the ellipsoid in kilometers (km). Default is :class:`None`.
         
         Returns
         -------
