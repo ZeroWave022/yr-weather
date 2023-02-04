@@ -3,7 +3,7 @@ from requests_cache import CachedSession
 from typing import Optional, Literal, Union
 
 class BaseClient():
-    def __init__(self, headers: dict, use_cache: Optional[bool] = True) -> None:
+    def __init__(self, headers: dict, use_cache: bool = True) -> None:
         self._baseURL = "https://api.met.no/weatherapi/"
         self._global_headers = headers
 
