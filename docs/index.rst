@@ -7,7 +7,7 @@ Welcome to yr-weather!
 ======================
 
 Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
-``yr-weather`` is an API wrapper for some of the products from `Yr's API <https://api.met.no/>`_.
+``yr-weather`` is an API wrapper for some of the products from `Yr's API <https://api.met.no/>`__.
 
 .. toctree::
    :hidden:
@@ -23,7 +23,7 @@ Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
    geosatellite/index
    base
 
-**Available on** `PyPI <https://pypi.org/project/yr-weather>`_:
+**Available on** `PyPI <https://pypi.org/project/yr-weather>`__:
 
 .. image:: https://img.shields.io/pypi/v/yr-weather
 .. image:: https://img.shields.io/pypi/pyversions/yr-weather
@@ -35,6 +35,12 @@ Supported products are:
 * Radar (v2.0)
 * Textforecast (v2.0)
 * Sunrise (v2.0)
+
+Requirements
+------------
+
+This package requires Python 3.8 or newer.
+To download the newest version, visit `Python's website <https://www.python.org/downloads/>`__.
 
 Installing
 ----------
@@ -125,12 +131,12 @@ Future objectives (TODOs)
 
 License
 -------
-This project is licensed under the `GNU General Public License v3 <https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE>`_.
+This project is licensed under the `Apache License 2.0 <https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE>`__.
 
 Disclaimer
 ----------
 ``yr-weather`` is not associated with yr.no or the Norwegian Meteorological Institute (MET).
-Any usage of the APIs provided by MET must follow their `API Terms of Service <https://api.met.no/doc/TermsOfService>`_.
+Any usage of the APIs provided by MET must follow their `API Terms of Service <https://api.met.no/doc/TermsOfService>`__.
 
 Additional links
 ------------------

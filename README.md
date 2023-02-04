@@ -25,6 +25,10 @@ Supported products are:
 - Sunrise (v2.0)
 - Geosatellite (v1.4)
 
+# Requirements
+This package requires Python 3.8 or newer.
+To download the newest version, visit [Python's website](https://www.python.org/downloads/).
+
 # Installing
 To use `yr-weather`, simply install it using `pip`.
 
