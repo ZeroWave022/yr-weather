@@ -8,29 +8,29 @@ from .types.geosatellite import SatArea
 
 class Geosatellite(BaseClient):
     """A client for interacting with the Yr Geosatellite API."""
-    def __init__(self, headers: Optional[dict] = {}, use_cache: Optional[bool] = True) -> None:
+    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "geosatellite/1.4/"
 
     def get_image(self,
-        area: Optional[SatArea] = "europe",
-        img_type: Optional[Literal["infrared", "visible"]] = "infrared",
+        area: SatArea = "europe",
+        img_type: Literal["infrared", "visible"] = "infrared",
         time: Optional[str] = None,
-        size: Optional[Literal["normal, small"]] = "normal"
+        size: Literal["normal", "small"] = "normal"
     ) -> requests.Response:
         """Get a geosatellite image.
         
         Parameters
         ----------
-        area: Optional[:data:`.SatArea`]
-            The area for the image. Must be a valid :data:`.SatArea`.
-        img_type: Optional[Literal["infrared", "visible"]]
-            The image type. Either "infrared" or "visible".
-        time: Optional[:class:`str`]
-            The time formatted as described in MET.no's documentation.
-        size: Optional[Literal["normal, small"]]
-            Image resolution. Either "normal" or "small" for thumbnails.
+        area: :data:`.SatArea`
+            Optional: The area for the image. Must be a valid :data:`.SatArea`. Default is ``"europe"``.
+        img_type: Literal["infrared", "visible"]
+            Optional: The image type. Either "infrared" or "visible". Default is ``"infrared"``.
+        time: :class:`str`
+            Optional: The time formatted as described in MET.no's documentation. Default is :class:`None`.
+        size: Literal["normal, small"]
+            Optional: Image resolution. Either "normal" or "small" for thumbnails. Default is ``"normal"``.
         
         Returns
         -------
