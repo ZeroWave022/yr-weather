@@ -31,7 +31,7 @@ class Locationforecast(BaseClient):
         weather_data = yr_client.get_forecast(59.91, 10.75)
     """
     
-    def __init__(self, headers: dict, use_cache: Optional[bool] = True) -> None:
+    def __init__(self, headers: dict, use_cache: bool = True) -> None:
         if "User-Agent" not in headers.keys():
             raise ValueError("A custom 'User-Agent' property is required in the 'headers' dict.")
         
@@ -39,7 +39,7 @@ class Locationforecast(BaseClient):
 
         self._baseURL += "locationforecast/2.0/"
             
-    def get_forecast(self, lat: float, lon: float, forecast_type: Optional[Literal["complete", "compact"]] = "complete") -> Union[CompleteForecast, CompactForecast]:
+    def get_forecast(self, lat: float, lon: float, forecast_type: Literal["complete", "compact"] = "complete") -> Union[CompleteForecast, CompactForecast]:
         """Retrieve a complete or compact forecast for a selected location.
 
         Parameters
@@ -48,9 +48,9 @@ class Locationforecast(BaseClient):
             The latitude of the location.
         lon: :class:`float` | :class:`int`
             The longitude of the location.
-        forecast_type: Optional[Literal["complete", "compact"]]
-            Optionally specify the type of forecast.
-            Possible values: ``"complete"`` or ``"compact"``.
+        forecast_type: Literal["complete", "compact"]
+            Optional: Specify the type of forecast, either ``"complete"`` or ``"compact"``.
+            Default is ``"complete"``.
         
         Returns
         -------
@@ -62,11 +62,8 @@ class Locationforecast(BaseClient):
             raise ValueError("Value of forecast_type must be 'complete', or 'compact'.\nNote that 'classic' is not supported, as it's obsolete.")
         
         request = self.session.get(self._baseURL + f"{forecast_type}?lat={lat}&lon={lon}")
-
-        if forecast_type == "complete":
-            weatherData: CompleteForecast = request.json()
-        elif forecast_type == "compact":
-            weatherData: CompactForecast = request.json()
+        
+        weatherData: Union[CompleteForecast, CompleteForecast] = request.json()
         
         return weatherData
 
