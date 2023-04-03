@@ -3,16 +3,30 @@ from typing import Optional, Literal, Union, get_args
 from .base import BaseClient
 from datetime import datetime
 
-from .types.radar import RadarOptions, RadarStatus, RadarArea, RadarType, RadarContentType
+from .types.radar import (
+    RadarOptions,
+    RadarStatus,
+    RadarArea,
+    RadarType,
+    RadarContentType,
+)
+
 
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
+
     def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "radar/2.0/"
 
-    def get_radar(self, area: str, radar_type: str, content: RadarContentType = "image", time: Optional[str] = None) -> requests.Response:
+    def get_radar(
+        self,
+        area: str,
+        radar_type: str,
+        content: RadarContentType = "image",
+        time: Optional[str] = None,
+    ) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
         For more information about what arguments are valid, please see:
@@ -28,7 +42,7 @@ class Radar(BaseClient):
             Optional: Either the string "image" or "animation", based on the desired result from the API. Default is ``"image"``.
         time: Optional[:class:`str`]
             An optional string containing the time when the image was taken, provided in ISO 8601 format. Default is :class:`None`.
-        
+
         Returns
         -------
         :class:`requests.Response`
@@ -75,14 +89,18 @@ class Radar(BaseClient):
         """
         area_args = list(get_args(RadarArea))
         type_args = list(get_args(RadarType))
-        
-        if (area not in area_args):
-            raise ValueError(f"The 'area' argument must be one of the possible RadarAreas: {area_args}")
-        
-        if (radar_type not in type_args):
-            raise ValueError(f"The 'radar_type' argument must be one of the possible RadarTypes: {type_args}")
-        
-        if (content not in ["image", "animation"]):
+
+        if area not in area_args:
+            raise ValueError(
+                f"The 'area' argument must be one of the possible RadarAreas: {area_args}"
+            )
+
+        if radar_type not in type_args:
+            raise ValueError(
+                f"The 'radar_type' argument must be one of the possible RadarTypes: {type_args}"
+            )
+
+        if content not in ["image", "animation"]:
             raise ValueError("The 'content' argument must be 'image' or 'animation'.")
 
         URL = self._baseURL + f"?area={area}&type={radar_type}&content={content}"
@@ -92,10 +110,12 @@ class Radar(BaseClient):
                 datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
                 URL += f"&time={time}"
             except:
-                raise ValueError("The 'time' argument must be of type 'str' and ISO 8601 format.")
-        
+                raise ValueError(
+                    "The 'time' argument must be of type 'str' and ISO 8601 format."
+                )
+
         return self.session.get(URL, stream=True)
-    
+
     def get_available_radars(self) -> RadarOptions:
         """Get a dict of available typed of radars.
 
@@ -117,7 +137,7 @@ class Radar(BaseClient):
 
     def get_status(self) -> RadarStatus:
         """Get the operational status of all radars.
-        
+
         Returns
         -------
         :class:`.RadarStatus`

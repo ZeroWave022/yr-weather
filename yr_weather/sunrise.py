@@ -5,14 +5,24 @@ from datetime import datetime
 
 from .types.sunrise import SunriseData, DetailLiteral
 
+
 class Sunrise(BaseClient):
     """A client for interacting with the Yr Sunrise API."""
+
     def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
         self._baseURL += "sunrise/2.0/"
-    
-    def get_sunrise(self, date: str, lat: float, lon: float, offset: str, days_forward: Optional[int] = None, height: Optional[float] = None) -> SunriseData:
+
+    def get_sunrise(
+        self,
+        date: str,
+        lat: float,
+        lon: float,
+        offset: str,
+        days_forward: Optional[int] = None,
+        height: Optional[float] = None,
+    ) -> SunriseData:
         """Get sunrise data.
 
         For more information, please see: https://api.met.no/weatherapi/sunrise/2.0/documentation
@@ -31,7 +41,7 @@ class Sunrise(BaseClient):
             Optional: The number of future days which should be included. Default is :class:`None`.
         height: Optional[:class:`float` | :class:`int`]
             Optional: The altitude above the ellipsoid in kilometers (km). Default is :class:`None`.
-        
+
         Returns
         -------
         :class:`.SunriseData`
@@ -55,8 +65,8 @@ class Sunrise(BaseClient):
             raise ValueError("The 'date' parameter must be a valid date.")
 
         # Ensure offset is valid.
-        #if not self._ensure_valid_offset(offset):
-        #    raise ValueError("The 'offset' parameter is not a valid timezone offset.")
+        if not self._ensure_valid_offset(offset):
+            raise ValueError("The 'offset' parameter is not a valid timezone offset.")
 
         # Set up URL and add optional parameters if present and valid.
         URL = self._baseURL + f".json?date={date}&lat={lat}&lon={lon}&offset={offset}"
@@ -72,15 +82,25 @@ class Sunrise(BaseClient):
             raise ValueError("Type of 'height' must be int or float.")
 
         request = self.session.get(URL)
-        
+
         if not request.ok:
-            raise requests.HTTPError(f"Unsuccessful response received: {request.status_code} {request.reason}.")
-        
+            raise requests.HTTPError(
+                f"Unsuccessful response received: {request.status_code} {request.reason}."
+            )
+
         sunrise_data: SunriseData = request.json()
-        
+
         return sunrise_data
 
-    def get_detail(self, detail: DetailLiteral, date: str, lat: float, lon: float, offset: str, height: Optional[float] = None) -> dict:
+    def get_detail(
+        self,
+        detail: DetailLiteral,
+        date: str,
+        lat: float,
+        lon: float,
+        offset: str,
+        height: Optional[float] = None,
+    ) -> dict:
         """Get data about the specified event or detail.
 
         This will get the newest sunrise data, and return the event/detail dict, if available.
@@ -100,7 +120,7 @@ class Sunrise(BaseClient):
             The timezone offset, given in the following format: `+/-HH:MM`.
         height: Optional[:class:`float` | :class:`int`]
             The altitude above the ellipsoid in kilometers (km).
-        
+
         Returns
         -------
         :class:`dict`
@@ -109,23 +129,27 @@ class Sunrise(BaseClient):
         literals = get_args(DetailLiteral)
 
         if detail not in literals:
-            raise ValueError(f"The 'detail' parameter must be one of the possible DetailLiterals: {literals}")
-        
+            raise ValueError(
+                f"The 'detail' parameter must be one of the possible DetailLiterals: {literals}"
+            )
+
         data = self.get_sunrise(date, lat, lon, offset, height=height)
-        
+
         try:
             return data["location"]["time"][0][detail]
         except:
-            raise Exception("This detail is not available for this combination of date and location.")
+            raise Exception(
+                "This detail is not available for this combination of date and location."
+            )
 
     def _ensure_valid_offset(self, offset: str) -> bool:
         """Ensures that a valid offset is given.
-        
+
         Returns a bool, indicating whether the offset is valid.
         """
         if not offset.startswith(("+", "-")):
             return False
-        
+
         time = offset.replace("+", "").replace("-", "")
 
         splitted = time.split(":")
@@ -140,8 +164,8 @@ class Sunrise(BaseClient):
                 int(i)
             except:
                 return False
-        
+
         if int(splitted[0]) < 10 and not splitted[0].startswith("0"):
             return False
-        
+
         return True
