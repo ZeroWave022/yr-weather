@@ -72,7 +72,7 @@ class Locationforecast(BaseClient):
             self._baseURL + f"{forecast_type}?lat={lat}&lon={lon}"
         )
 
-        weatherData: Union[CompleteForecast, CompleteForecast] = request.json()
+        weatherData: Union[CompleteForecast, CompactForecast] = request.json()
 
         return weatherData
 
