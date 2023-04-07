@@ -36,7 +36,7 @@ class Geosatellite(BaseClient):
         Returns
         -------
         requests.Response
-            A Response class enabling saving or futher management of the data received.
+            A Response class enabling saving or further management of the data received.
         """
         areaArgs = list(get_args(SatArea))
         typeArgs = ["infrared", "visible"]

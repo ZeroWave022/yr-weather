@@ -30,10 +30,9 @@ class Locationforecast(BaseClient):
     """
 
     def __init__(self, headers: dict, use_cache: bool = True) -> None:
-        if "User-Agent" not in headers.keys():
-            raise ValueError(
-                "A custom 'User-Agent' property is required in the 'headers' dict."
-            )
+        header_keys = [key.lower() for key in headers]
+        if "user-agent" not in header_keys:
+            raise ValueError("A custom 'User-Agent' is required in the 'headers' dict.")
 
         super().__init__(headers, use_cache)
 
@@ -101,7 +100,7 @@ class Locationforecast(BaseClient):
         URL = self._baseURL + f"compact?lat={lat}&lon={lon}"
 
         if altitude:
-            if type(altitude) != int:
+            if not isinstance(altitude, int):
                 raise TypeError("Type of altitude must be int.")
             URL += f"&altitude={altitude}"
 
@@ -139,7 +138,7 @@ class Locationforecast(BaseClient):
         URL = self._baseURL + f"complete?lat={lat}&lon={lon}"
 
         if altitude:
-            if type(altitude) != int:
+            if not isinstance(altitude, int):
                 raise TypeError("Type of altitude must be int.")
             URL += f"&altitude={altitude}"
 

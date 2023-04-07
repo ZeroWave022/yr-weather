@@ -4,6 +4,9 @@ from requests_cache import CachedSession
 
 class BaseClient:
     def __init__(self, headers: dict, use_cache: bool = True) -> None:
+        if not isinstance(headers, dict):
+            raise TypeError("The 'headers' parameter must be of type 'dict'.")
+
         self._baseURL = "https://api.met.no/weatherapi/"
         self._global_headers = headers
 
@@ -13,9 +16,6 @@ class BaseClient:
             self.session = requests.Session()
 
         self.session.headers = self._global_headers
-
-        if type(headers) != dict:
-            raise TypeError("The 'headers' argument must be of type 'dict'.")
 
     def set_headers(self, headers: dict) -> dict:
         """Set new headers of the client.
@@ -32,8 +32,8 @@ class BaseClient:
         :class:`dict`
             The headers which were set.
         """
-        if type(headers) != dict:
-            raise TypeError("The 'headers' argument must be of type 'dict'.")
+        if not isinstance(headers, dict):
+            raise TypeError("The 'headers' parameter must be of type 'dict'.")
 
         if "User-Agent" not in headers.keys():
             raise ValueError(
@@ -58,12 +58,12 @@ class BaseClient:
             The new state of the cache (on/off).
         """
         if toggle:
-            if type(self.session) != CachedSession:
+            if not isinstance(self.session, CachedSession):
                 self.session = CachedSession(cache_name="yr_cache", cache_control=True)
                 self.session.headers = self._global_headers
             return True
         else:
-            if type(self.session) != requests.Session:
+            if not isinstance(self.session, requests.Session):
                 self.session = requests.Session()
                 self.session.headers = self._global_headers
             return False
