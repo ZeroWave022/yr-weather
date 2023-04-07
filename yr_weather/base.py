@@ -35,11 +35,6 @@ class BaseClient:
         if not isinstance(headers, dict):
             raise TypeError("The 'headers' parameter must be of type 'dict'.")
 
-        if "User-Agent" not in headers.keys():
-            raise ValueError(
-                "A custom 'User-Agent' property is required in the 'headers' dict."
-            )
-
         self._global_headers = headers
         self.session.headers = headers
         return self.session.headers

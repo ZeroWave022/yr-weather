@@ -38,6 +38,13 @@ class Locationforecast(BaseClient):
 
         self._baseURL += "locationforecast/2.0/"
 
+    def set_headers(self, headers: dict) -> dict:
+        header_keys = [key.lower() for key in headers]
+        if "user-agent" not in header_keys:
+            raise ValueError("A custom 'User-Agent' is required in the 'headers' dict.")
+
+        return super().set_headers(headers)
+
     def get_forecast(
         self,
         lat: float,
