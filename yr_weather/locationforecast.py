@@ -54,7 +54,7 @@ class Forecast:
         else:
             return ForecastTime(self._timeseries[0])
 
-    def get_forecast_time(self, time: datetime) -> CompleteTime | CompactTime:
+    def get_forecast_time(self, time: datetime) -> ForecastTime | None:
         """Get a certain :class:`ForecastTime` by specifiying the time.
         The time will be rounded to the nearest hour.
 
@@ -72,12 +72,14 @@ class Forecast:
                 "Type of time should be datetime.datetime.\nFor more information, see https://docs.python.org/3/library/datetime.html"
             )
 
-        time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        formatted_time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        found_time = list(filter(lambda t: t["time"] == time, self._timeseries))
+        found_time = list(
+            filter(lambda t: t["time"] == formatted_time, self._timeseries)
+        )
 
         if found_time:
-            return found_time[0]
+            return ForecastTime(found_time[0])
         else:
             return None
 
@@ -242,7 +244,7 @@ class Locationforecast(BaseClient):
 
         request = self.session.get(self._baseURL + "complete?lat=0&lon=0")
 
-        data = request.json()
+        data: CompleteForecast = request.json()
 
         forecast = Forecast(data)
 

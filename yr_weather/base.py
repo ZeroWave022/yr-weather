@@ -11,7 +11,9 @@ class BaseClient:
         self._global_headers = headers
 
         if use_cache:
-            self.session = CachedSession(cache_name="yr_cache", cache_control=True)
+            self.session: CachedSession | requests.Session = CachedSession(
+                cache_name="yr_cache", cache_control=True
+            )
         else:
             self.session = requests.Session()
 

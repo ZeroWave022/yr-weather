@@ -100,7 +100,7 @@ class Sunrise(BaseClient):
         lon: float,
         offset: str,
         height: Optional[float] = None,
-    ) -> dict:
+    ):
         """Get data about the specified event or detail.
 
         This will get the newest sunrise data, and return the event/detail dict, if available.
