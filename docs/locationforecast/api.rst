@@ -5,3 +5,13 @@ Locationforecast: API Reference
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. autoclass:: yr_weather.locationforecast.Forecast
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: yr_weather.locationforecast.ForecastTime
+   :members:
+   :undoc-members:
+   :show-inheritance:
