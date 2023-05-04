@@ -6,6 +6,8 @@ class CompleteUnits(TypedDict):
     air_temperature: str
     air_temperature_max: str
     air_temperature_min: str
+    air_temperature_percentile_10: str
+    air_temperature_percentile_90: str
     cloud_area_fraction: str
     cloud_area_fraction_high: str
     cloud_area_fraction_low: str
@@ -13,15 +15,24 @@ class CompleteUnits(TypedDict):
     dew_point_temperature: str
     fog_area_fraction: str
     precipitation_amount: str
+    precipitation_amount_max: str
+    precipitation_amount_min: str
+    probability_of_precipitation: str
+    probability_of_thunder: str
     relative_humidity: str
     ultraviolet_index_clear_sky: str
     wind_from_direction: str
     wind_speed: str
+    wind_speed_of_gust: str
+    wind_speed_percentile_10: str
+    wind_speed_percentile_90: str
 
 
 class CompleteInstantDetails(TypedDict):
     air_pressure_at_sea_level: float
     air_temperature: float
+    air_temperature_percentile_10: float
+    air_temperature_percentile_90: float
     cloud_area_fraction: float
     cloud_area_fraction_high: float
     cloud_area_fraction_low: float
@@ -32,16 +43,42 @@ class CompleteInstantDetails(TypedDict):
     ultraviolet_index_clear_sky: float
     wind_from_direction: float
     wind_speed: float
+    wind_speed_of_gust: float
+    wind_speed_percentile_10: float
+    wind_speed_percentile_90: float
 
 
 class CompleteFutureSummary(TypedDict):
     symbol_code: str
 
 
-class CompleteFutureDetails(TypedDict):
-    air_temperature_max: Union[float, None]
-    air_temperature_min: Union[float, None]
-    precipitation_amount: Union[float, None]
+# Any details may be included, and it's unpredictable which.
+# Use the same attributes as CompleteUnits, but mark it as potentially incomplete (total=False).
+class CompleteFutureDetails(TypedDict, total=False):
+    air_pressure_at_sea_level: float
+    air_temperature: float
+    air_temperature_max: float
+    air_temperature_min: float
+    air_temperature_percentile_10: float
+    air_temperature_percentile_90: float
+    cloud_area_fraction: float
+    cloud_area_fraction_high: float
+    cloud_area_fraction_low: float
+    cloud_area_fraction_medium: float
+    dew_point_temperature: float
+    fog_area_fraction: float
+    precipitation_amount: float
+    precipitation_amount_max: float
+    precipitation_amount_min: float
+    probability_of_precipitation: float
+    probability_of_thunder: float
+    relative_humidity: float
+    ultraviolet_index_clear_sky: float
+    wind_from_direction: float
+    wind_speed: float
+    wind_speed_of_gust: float
+    wind_speed_percentile_10: float
+    wind_speed_percentile_90: float
 
 
 class CompleteInstantData(TypedDict):
