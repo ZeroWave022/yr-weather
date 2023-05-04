@@ -9,6 +9,7 @@
 </div>
 
 # yr-weather
+
 Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
 `yr-weather` is an API wrapper for some of the products from [Yr's API](https://api.met.no/).
 
@@ -19,6 +20,7 @@ Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
 ![Package status](https://img.shields.io/pypi/status/yr-weather)
 
 Supported products are:
+
 - Locationforecast (v2.0)
 - Radar (v2.0)
 - Textforecast (v2.0)
@@ -26,26 +28,32 @@ Supported products are:
 - Geosatellite (v1.4)
 
 # Requirements
+
 This package requires Python 3.8 or newer.
 To download the newest version, visit [Python's website](https://www.python.org/downloads/).
 
 # Installing
+
 To use `yr-weather`, simply install it using `pip`.
 
 For Windows:
-```
+
+```console
 pip install yr-weather
 ```
 
 For Linux/macOS:
-```
+
+```console
 python3 -m pip install yr-weather
 ```
 
 # Getting started
+
 To get started, check out the [documentation](https://yr-weather.readthedocs.io/en/latest/gettingstarted.html).
 
 For specific API Products, check their separate section on the documentation:
+
 - [Locationforecast](https://yr-weather.readthedocs.io/en/latest/locationforecast/index.html)
 - [Radar](https://yr-weather.readthedocs.io/en/latest/radar/index.html)
 - [Textforecast](https://yr-weather.readthedocs.io/en/latest/textforecast/index.html)
@@ -55,21 +63,29 @@ For specific API Products, check their separate section on the documentation:
 For the best developer experience, all functions and classes are typed and documented with docstrings.
 
 ## Caching
+
 By default, the library makes a cache file named `yr_cache.sqlite` in the working directory.
 To disable caching, set `use_cache` to `False` like so:
+
 ```py
 yr_weather.Locationforecast(headers=headers, use_cache=False)
 ```
+
 MET's Terms of Service encourage using caching, to avoid extra load on the network. Therefore, this feature is not recommended.
 
 # Future objectives (TODOs)
+
 - [x] Add Read the Docs documentation
 - [ ] Add further features from MET's API
-- [ ] Improve support for earlier Python versions
+- [ ] Make sure Python >=3.8 is supported
+- [ ] Add linter
+- [ ] Add type checker
 
 # License
+
 This project is licensed under the [Apache License 2.0](https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE).
 
 # Disclaimer
+
 `yr-weather` is not associated with yr.no or the Norwegian Meteorological Institute (MET).
 Any usage of the APIs provided by MET must follow their [API Terms of Service](https://api.met.no/doc/TermsOfService).
