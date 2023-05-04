@@ -1,8 +1,85 @@
-from typing import Optional, Literal, Union
+from datetime import datetime
+from typing import Optional, Literal
 
 from .base import BaseClient
-from .types.completeforecast import CompleteForecast, CompleteUnits
-from .types.compactforecast import CompactForecast, CompactInstantDetails
+from .types.completeforecast import CompleteForecast, CompleteUnits, CompleteTime
+from .types.compactforecast import CompactForecast, CompactInstantDetails, CompactTime
+
+
+class ForecastTime:
+    def __init__(self, time: CompleteTime | CompactTime) -> None:
+        self.details = time["data"]["instant"]["details"]
+        self.next_hour = time["data"]["next_1_hours"]
+        self.next_6_hours = time["data"]["next_6_hours"]
+        self.next_12_hours = time["data"]["next_12_hours"]
+
+
+class Forecast:
+    def __init__(self, forecastData: CompleteForecast | CompactForecast) -> None:
+        self.type = forecastData["type"]
+        self.geometry = forecastData["geometry"]
+        self.updated_at = forecastData["properties"]["meta"]["updated_at"]
+        self.units = forecastData["properties"]["meta"]["units"]
+        self._timeseries = forecastData["properties"]["timeseries"]
+
+    def _conv_to_nearest_hour(self, date: datetime) -> datetime:
+        if date.minute >= 30:
+            return date.replace(microsecond=0, second=0, minute=0, hour=date.hour + 1)
+        else:
+            return date.replace(microsecond=0, second=0, minute=0)
+
+    def now(self) -> ForecastTime:
+        """Get the newest :class:`ForecastTime` for this Forecast.
+
+        Returns
+        -------
+        ForecastTime
+        """
+        now = datetime.utcnow()
+        time = self._conv_to_nearest_hour(now)
+        """if now.minute >= 30:
+            nearest_hour = now.replace(microsecond=0, second=0, minute=0, hour=now.hour+1)
+        else:
+            nearest_hour = now.replace(microsecond=0, second=0, minute=0)"""
+
+        nearest_hour = time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        # Try to get the data for the nearest hour from API data
+        filtered_time = list(
+            filter(lambda t: t["time"] == nearest_hour, self._timeseries)
+        )
+
+        if filtered_time:
+            return ForecastTime(filtered_time[0])
+        else:
+            return ForecastTime(self._timeseries[0])
+
+    def get_forecast_time(self, time: datetime) -> CompleteTime | CompactTime:
+        """Get a certain :class:`ForecastTime` by specifiying the time.
+        The time will be rounded to the nearest hour.
+
+        Parameters
+        ----------
+        time: datetime.datetime
+            The datetime to use when retrieving the nearest forecast info.
+
+        Returns
+        -------
+        ForecastTime
+        """
+        if not isinstance(time, datetime):
+            raise ValueError(
+                "Type of time should be datetime.datetime.\nFor more information, see https://docs.python.org/3/library/datetime.html"
+            )
+
+        time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        found_time = list(filter(lambda t: t["time"] == time, self._timeseries))
+
+        if found_time:
+            return found_time[0]
+        else:
+            return None
 
 
 class Locationforecast(BaseClient):
@@ -50,7 +127,7 @@ class Locationforecast(BaseClient):
         lat: float,
         lon: float,
         forecast_type: Literal["complete", "compact"] = "complete",
-    ) -> Union[CompleteForecast, CompactForecast]:
+    ) -> Forecast:
         """Retrieve a complete or compact forecast for a selected location.
 
         Parameters
@@ -65,8 +142,8 @@ class Locationforecast(BaseClient):
 
         Returns
         -------
-        CompleteForecast | CompactForecast
-            An object with all possible values from the API, including temperature, air pressure, humidity and so on.
+        Forecast
+            An instance of :class:`Forecast` with helper functions and values from the API.
         """
 
         if forecast_type not in ["complete", "compact"]:
@@ -78,9 +155,9 @@ class Locationforecast(BaseClient):
             self._baseURL + f"{forecast_type}?lat={lat}&lon={lon}"
         )
 
-        weatherData: Union[CompleteForecast, CompactForecast] = request.json()
+        weatherData = request.json()
 
-        return weatherData
+        return Forecast(weatherData)
 
     def get_air_temperature(
         self, lat: float, lon: float, altitude: Optional[int] = None
@@ -112,13 +189,11 @@ class Locationforecast(BaseClient):
             URL += f"&altitude={altitude}"
 
         request = self.session.get(URL)
-        data: CompactForecast = request.json()
+        data = request.json()
 
-        return float(
-            data["properties"]["timeseries"][0]["data"]["instant"]["details"][
-                "air_temperature"
-            ]
-        )
+        forecast = Forecast(data)
+
+        return float(forecast.now().details["air_temperature"])
 
     def get_instant_data(
         self, lat: float, lon: float, altitude: Optional[int] = None
@@ -150,13 +225,11 @@ class Locationforecast(BaseClient):
             URL += f"&altitude={altitude}"
 
         request = self.session.get(URL)
-        data: CompleteForecast = request.json()
+        data = request.json()
 
-        instant_data: CompactInstantDetails = data["properties"]["timeseries"][0][
-            "data"
-        ]["instant"]["details"]
+        forecast = Forecast(data)
 
-        return instant_data
+        return forecast.now().details
 
     def get_units(self) -> CompleteUnits:
         """Retrieve a list of units used by the Yr Locationforecast API.
@@ -169,7 +242,8 @@ class Locationforecast(BaseClient):
 
         request = self.session.get(self._baseURL + "complete?lat=0&lon=0")
 
-        data: CompleteForecast = request.json()
-        units: CompleteUnits = data["properties"]["meta"]["units"]
+        data = request.json()
 
-        return units
+        forecast = Forecast(data)
+
+        return forecast.units
