@@ -9,7 +9,7 @@ class BaseClient:
     """A base client other clients inherit."""
 
     def __init__(
-        self, headers: Optional[Dict[str, str]], use_cache: bool = True
+        self, headers: Optional[Dict[str, str]] = None, use_cache: bool = True
     ) -> None:
         if headers is not None and not isinstance(headers, dict):
             raise TypeError("The 'headers' parameter must be of type 'dict' or None.")
