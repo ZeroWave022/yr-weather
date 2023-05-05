@@ -12,7 +12,7 @@ from .types.textforecast import TextForecasts, TextAreas
 class Textforecast(BaseClient):
     """A client for interacting with the Yr Textforecast API."""
 
-    def __init__(self, headers: dict = None, use_cache: bool = True) -> None:
+    def __init__(self, headers=None, use_cache=True) -> None:
         super().__init__(headers, use_cache)
 
         self._base_url += "textforecast/2.0/"

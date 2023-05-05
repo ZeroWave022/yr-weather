@@ -11,7 +11,7 @@ from .types.sunrise import SunriseData, DetailLiteral
 class Sunrise(BaseClient):
     """A client for interacting with the Yr Sunrise API."""
 
-    def __init__(self, headers: dict = None, use_cache: bool = True) -> None:
+    def __init__(self, headers=None, use_cache=True) -> None:
         super().__init__(headers, use_cache)
 
         self._base_url += "sunrise/2.0/"

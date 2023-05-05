@@ -1,6 +1,6 @@
 """A module for base classes which other modules use."""
 
-from typing import Optional
+from typing import Optional, Union, Dict
 import requests
 from requests_cache import CachedSession
 
@@ -8,7 +8,9 @@ from requests_cache import CachedSession
 class BaseClient:
     """A base client other clients inherit."""
 
-    def __init__(self, headers: Optional[dict], use_cache: bool = True) -> None:
+    def __init__(
+        self, headers: Optional[Dict[str, str]], use_cache: bool = True
+    ) -> None:
         if headers is not None and not isinstance(headers, dict):
             raise TypeError("The 'headers' parameter must be of type 'dict' or None.")
 
@@ -16,13 +18,14 @@ class BaseClient:
         self._global_headers = headers
 
         if use_cache:
-            self.session: CachedSession | requests.Session = CachedSession(
+            self.session: Union[CachedSession, requests.Session] = CachedSession(
                 cache_name="yr_cache", cache_control=True
             )
         else:
             self.session = requests.Session()
 
-        self.session.headers = self._global_headers
+        if headers is not None:
+            self.session.headers = self._global_headers  # type: ignore
 
     def set_headers(self, headers: dict) -> dict:
         """Set new headers of the client.
@@ -62,7 +65,7 @@ class BaseClient:
         if toggle:
             if not isinstance(self.session, CachedSession):
                 self.session = CachedSession(cache_name="yr_cache", cache_control=True)
-                self.session.headers = self._global_headers
+                self.session.headers = self._global_headers  # type: ignore
             return True
 
         if not isinstance(self.session, requests.Session):

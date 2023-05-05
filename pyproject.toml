@@ -36,3 +36,11 @@ dependencies = [
 
 [tool.setuptools.dynamic]
 version = { attr = "yr_weather.__version__" }
+
+[tool.setuptools.package-data]
+yr_weather = ["py.typed"]
+
+[tool.mypy]
+exclude = [
+    "venv/"
+]

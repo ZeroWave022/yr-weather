@@ -1,7 +1,7 @@
 """A module with classes for the Locationforecast API."""
 
 from datetime import datetime
-from typing import Optional, Literal
+from typing import Union, Optional, Literal, Dict, List
 
 from .base import BaseClient
 from .types.completeforecast import CompleteForecast, CompleteUnits, CompleteTime
@@ -11,7 +11,7 @@ from .types.compactforecast import CompactForecast, CompactInstantDetails, Compa
 class ForecastTime:
     """A class holding data about a forecast for a specific time."""
 
-    def __init__(self, time: CompleteTime | CompactTime) -> None:
+    def __init__(self, time: Union[CompleteTime, CompactTime]) -> None:
         self.details = time["data"]["instant"]["details"]
         self.next_hour = time["data"]["next_1_hours"]
         self.next_6_hours = time["data"]["next_6_hours"]
@@ -21,7 +21,7 @@ class ForecastTime:
 class Forecast:
     """A class holding a location forecast with multiple timeframes to choose from."""
 
-    def __init__(self, forecast_data: CompleteForecast | CompactForecast) -> None:
+    def __init__(self, forecast_data: Union[CompleteForecast, CompactForecast]) -> None:
         self.type = forecast_data["type"]
         self.geometry = forecast_data["geometry"]
         self.updated_at = forecast_data["properties"]["meta"]["updated_at"]
@@ -47,7 +47,7 @@ class Forecast:
         nearest_hour = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Try to get the data for the nearest hour from API data
-        filtered_time = list(
+        filtered_time: List[Union[CompleteTime, CompactTime]] = list(
             filter(lambda t: t["time"] == nearest_hour, self._timeseries)
         )
 
@@ -56,7 +56,7 @@ class Forecast:
 
         return ForecastTime(self._timeseries[0])
 
-    def get_forecast_time(self, time: datetime) -> ForecastTime | None:
+    def get_forecast_time(self, time: datetime) -> Optional[ForecastTime]:
         """Get a certain :class:`ForecastTime` by specifiying the time.
         The time will be rounded to the nearest hour.
 
@@ -76,7 +76,7 @@ class Forecast:
 
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        found_time = list(
+        found_time: List[Union[CompleteTime, CompactTime]] = list(
             filter(lambda t: t["time"] == formatted_time, self._timeseries)
         )
 
@@ -110,7 +110,7 @@ class Locationforecast(BaseClient):
         weather_data = yr_client.get_forecast(59.91, 10.75)
     """
 
-    def __init__(self, headers: dict, use_cache: bool = True) -> None:
+    def __init__(self, headers: Dict[str, str], use_cache=True) -> None:
         header_keys = [key.lower() for key in headers]
         if "user-agent" not in header_keys:
             raise ValueError("A custom 'User-Agent' is required in the 'headers' dict.")
@@ -250,4 +250,4 @@ class Locationforecast(BaseClient):
 
         forecast = Forecast(data)
 
-        return forecast.units
+        return forecast.units  # type: ignore
