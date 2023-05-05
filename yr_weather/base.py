@@ -1,13 +1,18 @@
+"""A module for base classes which other modules use."""
+
+from typing import Optional
 import requests
 from requests_cache import CachedSession
 
 
 class BaseClient:
-    def __init__(self, headers: dict, use_cache: bool = True) -> None:
-        if not isinstance(headers, dict):
-            raise TypeError("The 'headers' parameter must be of type 'dict'.")
+    """A base client other clients inherit."""
 
-        self._baseURL = "https://api.met.no/weatherapi/"
+    def __init__(self, headers: Optional[dict], use_cache: bool = True) -> None:
+        if headers is not None and not isinstance(headers, dict):
+            raise TypeError("The 'headers' parameter must be of type 'dict' or None.")
+
+        self._base_url = "https://api.met.no/weatherapi/"
         self._global_headers = headers
 
         if use_cache:
@@ -59,8 +64,8 @@ class BaseClient:
                 self.session = CachedSession(cache_name="yr_cache", cache_control=True)
                 self.session.headers = self._global_headers
             return True
-        else:
-            if not isinstance(self.session, requests.Session):
-                self.session = requests.Session()
-                self.session.headers = self._global_headers
-            return False
+
+        if not isinstance(self.session, requests.Session):
+            self.session = requests.Session()
+            self.session.headers = self._global_headers
+        return False

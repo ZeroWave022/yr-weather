@@ -1,3 +1,5 @@
+"""Types for radar data."""
+
 from typing import Literal, TypedDict, List, Optional
 
 RadarArea = Literal[
@@ -54,6 +56,8 @@ RadarType = Literal[
 
 
 class AvailableAreas(TypedDict):
+    """A class for available areas based on radar type"""
+
     area: List[RadarArea]
     content: RadarContentType
 
@@ -96,6 +100,8 @@ RadarOptions = TypedDict(
 
 
 class AreaStatus(TypedDict):
+    """Data for the status of a radar area"""
+
     Area: str
     DueDate: Optional[str]
     FaultCode: Optional[Literal["PS", "VP", "CO", "TE"]]
@@ -106,5 +112,7 @@ class AreaStatus(TypedDict):
 
 
 class RadarStatus(TypedDict):
+    """The radar status"""
+
     Last_update: str
     Radars: List[AreaStatus]

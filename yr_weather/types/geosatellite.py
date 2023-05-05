@@ -1,3 +1,5 @@
-from typing import TypedDict, Literal
+"""Types for geosatellite data."""
+
+from typing import Literal
 
 SatArea = Literal["africa", "atlantic_ocean", "europe", "global", "mediterranean"]

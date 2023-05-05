@@ -1,7 +1,11 @@
-from typing import TypedDict, Union, List
+"""Types for complete Locationforecasts."""
+
+from typing import TypedDict, List
 
 
 class CompleteUnits(TypedDict):
+    """Units that can be used in the forecast data"""
+
     air_pressure_at_sea_level: str
     air_temperature: str
     air_temperature_max: str
@@ -29,6 +33,8 @@ class CompleteUnits(TypedDict):
 
 
 class CompleteInstantDetails(TypedDict):
+    """Details of instant weather data for a time"""
+
     air_pressure_at_sea_level: float
     air_temperature: float
     air_temperature_percentile_10: float
@@ -49,12 +55,16 @@ class CompleteInstantDetails(TypedDict):
 
 
 class CompleteFutureSummary(TypedDict):
+    """Summary for next x hours for a time"""
+
     symbol_code: str
 
 
 # Any details may be included, and it's unpredictable which.
 # Use the same attributes as CompleteUnits, but mark it as potentially incomplete (total=False).
 class CompleteFutureDetails(TypedDict, total=False):
+    """Instant details for a forecast"""
+
     air_pressure_at_sea_level: float
     air_temperature: float
     air_temperature_max: float
@@ -82,15 +92,21 @@ class CompleteFutureDetails(TypedDict, total=False):
 
 
 class CompleteInstantData(TypedDict):
+    """Instant data for a forecast"""
+
     details: CompleteInstantDetails
 
 
 class CompleteFutureData(TypedDict):
+    """Data for next x hours for a time"""
+
     summary: CompleteFutureSummary
     details: CompleteFutureDetails
 
 
 class CompleteTimeData(TypedDict):
+    """Data for one time from a timeseries"""
+
     instant: CompleteInstantData
     next_1_hours: CompleteFutureData
     next_6_hours: CompleteFutureData
@@ -98,26 +114,36 @@ class CompleteTimeData(TypedDict):
 
 
 class CompleteTime(TypedDict):
+    """A time in the forecast timeseries"""
+
     time: str
     data: CompleteTimeData
 
 
 class CompleteMeta(TypedDict):
+    """Forecast metadata"""
+
     updated_at: str
     units: CompleteUnits
 
 
 class CompleteProperties(TypedDict):
+    """Forecast properties"""
+
     meta: CompleteMeta
     timeseries: List[CompleteTime]
 
 
 class CompleteGeometry(TypedDict):
+    """Geometry data"""
+
     type: str
     coordinates: List[int]
 
 
 class CompleteForecast(TypedDict):
+    """Complete forecast data"""
+
     type: str
     geometry: CompleteGeometry
     properties: CompleteProperties

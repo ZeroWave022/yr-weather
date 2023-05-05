@@ -1,7 +1,10 @@
-from typing import Literal, Union, get_args
-from .base import BaseClient
-import xmltodict
+"""A module with classes for the Textforecast API."""
+
+from typing import Literal, Union
 import warnings
+from xml.parsers.expat import ExpatError
+import xmltodict
+from .base import BaseClient
 
 from .types.textforecast import TextForecasts, TextAreas
 
@@ -9,10 +12,10 @@ from .types.textforecast import TextForecasts, TextAreas
 class Textforecast(BaseClient):
     """A client for interacting with the Yr Textforecast API."""
 
-    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
+    def __init__(self, headers: dict = None, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
-        self._baseURL += "textforecast/2.0/"
+        self._base_url += "textforecast/2.0/"
 
     def get_forecasts(
         self,
@@ -46,13 +49,13 @@ class Textforecast(BaseClient):
                 f"The 'forecast' argument must be one of the following: {', '.join(forecast_types)}."
             )
 
-        URL = self._baseURL + f"?forecast={forecast}"
+        url = self._base_url + f"?forecast={forecast}"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
 
         try:
             parsed = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")
-        except:
+        except ExpatError:
             warnings.warn(
                 "Parsing XML failed (this could be caused by a non-200 status code).\nFalling back to response text."
             )
@@ -83,13 +86,13 @@ class Textforecast(BaseClient):
                 f"The 'area_type' argument must be one of the following: {', '.join(area_types)}."
             )
 
-        URL = self._baseURL + f"areas?type={area_type}"
+        url = self._base_url + f"areas?type={area_type}"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
 
         try:
             parsed = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")
-        except:
+        except ExpatError:
             warnings.warn(
                 "Parsing XML failed (this could be caused by a non-200 status code).\nFalling back to response text."
             )

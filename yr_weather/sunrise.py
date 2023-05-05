@@ -1,7 +1,9 @@
-import requests
-from typing import Optional, get_args
-from .base import BaseClient
+"""A module with classes for the Sunrise API."""
+
 from datetime import datetime
+from typing import Optional, get_args
+import requests
+from .base import BaseClient
 
 from .types.sunrise import SunriseData, DetailLiteral
 
@@ -9,10 +11,10 @@ from .types.sunrise import SunriseData, DetailLiteral
 class Sunrise(BaseClient):
     """A client for interacting with the Yr Sunrise API."""
 
-    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
+    def __init__(self, headers: dict = None, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
-        self._baseURL += "sunrise/2.0/"
+        self._base_url += "sunrise/2.0/"
 
     def get_sunrise(
         self,
@@ -61,27 +63,27 @@ class Sunrise(BaseClient):
         try:
             splitted = [int(num) for num in date.split("-")]
             datetime(splitted[0], splitted[1], splitted[2])
-        except:
-            raise ValueError("The 'date' parameter must be a valid date.")
+        except Exception as exc:
+            raise ValueError("The 'date' parameter must be a valid date.") from exc
 
         # Ensure offset is valid.
         if not self._ensure_valid_offset(offset):
             raise ValueError("The 'offset' parameter is not a valid timezone offset.")
 
         # Set up URL and add optional parameters if present and valid.
-        URL = self._baseURL + f".json?date={date}&lat={lat}&lon={lon}&offset={offset}"
+        url = self._base_url + f".json?date={date}&lat={lat}&lon={lon}&offset={offset}"
 
         if isinstance(days_forward, int):
-            URL += f"&days={days_forward}"
+            url += f"&days={days_forward}"
         elif days_forward is not None:
             raise ValueError("Type of 'days_forward' must be int.")
 
         if isinstance(height, (int, float)):
-            URL += f"&height={height}"
+            url += f"&height={height}"
         elif height is not None:
             raise ValueError("Type of 'height' must be int or float.")
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
 
         if not request.ok:
             raise requests.HTTPError(
@@ -137,10 +139,10 @@ class Sunrise(BaseClient):
 
         try:
             return data["location"]["time"][0][detail]
-        except:
-            raise Exception(
+        except Exception as exc:
+            raise RuntimeError(
                 "This detail is not available for this combination of date and location."
-            )
+            ) from exc
 
     def _ensure_valid_offset(self, offset: str) -> bool:
         """Ensures that a valid offset is given.
@@ -162,7 +164,7 @@ class Sunrise(BaseClient):
                 return False
             try:
                 int(i)
-            except:
+            except ValueError:
                 return False
 
         if int(splitted[0]) < 10 and not splitted[0].startswith("0"):

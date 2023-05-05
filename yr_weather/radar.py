@@ -1,7 +1,9 @@
-import requests
-from typing import Optional, Literal, Union, get_args
-from .base import BaseClient
+"""A module with classes for the Radar API."""
+
+from typing import Optional, get_args
 from datetime import datetime
+import requests
+from .base import BaseClient
 
 from .types.radar import (
     RadarOptions,
@@ -15,10 +17,10 @@ from .types.radar import (
 class Radar(BaseClient):
     """A client for interacting with the Yr Radar API."""
 
-    def __init__(self, headers: dict = {}, use_cache: bool = True) -> None:
+    def __init__(self, headers: dict = None, use_cache: bool = True) -> None:
         super().__init__(headers, use_cache)
 
-        self._baseURL += "radar/2.0/"
+        self._base_url += "radar/2.0/"
 
     def get_radar(
         self,
@@ -103,18 +105,18 @@ class Radar(BaseClient):
         if content not in ["image", "animation"]:
             raise ValueError("The 'content' argument must be 'image' or 'animation'.")
 
-        URL = self._baseURL + f"?area={area}&type={radar_type}&content={content}"
+        url = self._base_url + f"?area={area}&type={radar_type}&content={content}"
 
         if time:
             try:
                 datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
-                URL += f"&time={time}"
-            except:
+                url += f"&time={time}"
+            except Exception as exc:
                 raise ValueError(
                     "The 'time' argument must be of type 'str' and ISO 8601 format."
-                )
+                ) from exc
 
-        return self.session.get(URL, stream=True)
+        return self.session.get(url, stream=True)
 
     def get_available_radars(self) -> RadarOptions:
         """Get a dict of available typed of radars.
@@ -127,9 +129,9 @@ class Radar(BaseClient):
         :class:`.RadarOptions`
             A TypedDict with available radars and additional info.
         """
-        URL = self._baseURL + "radaroptions"
+        url = self._base_url + "radaroptions"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
 
         options: RadarOptions = request.json()
 
@@ -143,9 +145,9 @@ class Radar(BaseClient):
         :class:`.RadarStatus`
             A TypedDict with statuses of radars.
         """
-        URL = self._baseURL + "status"
+        url = self._base_url + "status"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
 
         status: RadarStatus = request.json()
 

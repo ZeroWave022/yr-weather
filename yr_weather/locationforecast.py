@@ -1,3 +1,5 @@
+"""A module with classes for the Locationforecast API."""
+
 from datetime import datetime
 from typing import Optional, Literal
 
@@ -7,6 +9,8 @@ from .types.compactforecast import CompactForecast, CompactInstantDetails, Compa
 
 
 class ForecastTime:
+    """A class holding data about a forecast for a specific time."""
+
     def __init__(self, time: CompleteTime | CompactTime) -> None:
         self.details = time["data"]["instant"]["details"]
         self.next_hour = time["data"]["next_1_hours"]
@@ -15,12 +19,14 @@ class ForecastTime:
 
 
 class Forecast:
-    def __init__(self, forecastData: CompleteForecast | CompactForecast) -> None:
-        self.type = forecastData["type"]
-        self.geometry = forecastData["geometry"]
-        self.updated_at = forecastData["properties"]["meta"]["updated_at"]
-        self.units = forecastData["properties"]["meta"]["units"]
-        self._timeseries = forecastData["properties"]["timeseries"]
+    """A class holding a location forecast with multiple timeframes to choose from."""
+
+    def __init__(self, forecast_data: CompleteForecast | CompactForecast) -> None:
+        self.type = forecast_data["type"]
+        self.geometry = forecast_data["geometry"]
+        self.updated_at = forecast_data["properties"]["meta"]["updated_at"]
+        self.units = forecast_data["properties"]["meta"]["units"]
+        self._timeseries = forecast_data["properties"]["timeseries"]
 
     def _conv_to_nearest_hour(self, date: datetime) -> datetime:
         if date.minute >= 30:
@@ -37,10 +43,6 @@ class Forecast:
         """
         now = datetime.utcnow()
         time = self._conv_to_nearest_hour(now)
-        """if now.minute >= 30:
-            nearest_hour = now.replace(microsecond=0, second=0, minute=0, hour=now.hour+1)
-        else:
-            nearest_hour = now.replace(microsecond=0, second=0, minute=0)"""
 
         nearest_hour = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -51,8 +53,8 @@ class Forecast:
 
         if filtered_time:
             return ForecastTime(filtered_time[0])
-        else:
-            return ForecastTime(self._timeseries[0])
+
+        return ForecastTime(self._timeseries[0])
 
     def get_forecast_time(self, time: datetime) -> ForecastTime | None:
         """Get a certain :class:`ForecastTime` by specifiying the time.
@@ -80,8 +82,8 @@ class Forecast:
 
         if found_time:
             return ForecastTime(found_time[0])
-        else:
-            return None
+
+        return None
 
 
 class Locationforecast(BaseClient):
@@ -115,7 +117,7 @@ class Locationforecast(BaseClient):
 
         super().__init__(headers, use_cache)
 
-        self._baseURL += "locationforecast/2.0/"
+        self._base_url += "locationforecast/2.0/"
 
     def set_headers(self, headers: dict) -> dict:
         header_keys = [key.lower() for key in headers]
@@ -154,12 +156,12 @@ class Locationforecast(BaseClient):
             )
 
         request = self.session.get(
-            self._baseURL + f"{forecast_type}?lat={lat}&lon={lon}"
+            self._base_url + f"{forecast_type}?lat={lat}&lon={lon}"
         )
 
-        weatherData = request.json()
+        weather_data = request.json()
 
-        return Forecast(weatherData)
+        return Forecast(weather_data)
 
     def get_air_temperature(
         self, lat: float, lon: float, altitude: Optional[int] = None
@@ -183,14 +185,14 @@ class Locationforecast(BaseClient):
             The air temperature, given in the current scale used by the Yr Locationforecast API (this is usually degrees Celsius).
         """
 
-        URL = self._baseURL + f"compact?lat={lat}&lon={lon}"
+        url = self._base_url + f"compact?lat={lat}&lon={lon}"
 
         if altitude:
             if not isinstance(altitude, int):
                 raise TypeError("Type of altitude must be int.")
-            URL += f"&altitude={altitude}"
+            url += f"&altitude={altitude}"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
         data = request.json()
 
         forecast = Forecast(data)
@@ -219,14 +221,14 @@ class Locationforecast(BaseClient):
             A typed dict with data received from the API.
         """
 
-        URL = self._baseURL + f"complete?lat={lat}&lon={lon}"
+        url = self._base_url + f"complete?lat={lat}&lon={lon}"
 
         if altitude:
             if not isinstance(altitude, int):
                 raise TypeError("Type of altitude must be int.")
-            URL += f"&altitude={altitude}"
+            url += f"&altitude={altitude}"
 
-        request = self.session.get(URL)
+        request = self.session.get(url)
         data = request.json()
 
         forecast = Forecast(data)
@@ -242,7 +244,7 @@ class Locationforecast(BaseClient):
             A typed dict with units currently used.
         """
 
-        request = self.session.get(self._baseURL + "complete?lat=0&lon=0")
+        request = self.session.get(self._base_url + "complete?lat=0&lon=0")
 
         data: CompleteForecast = request.json()
 
