@@ -10,8 +10,10 @@
 
 # yr-weather
 
-Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
-`yr-weather` is an API wrapper for some of the products from [Yr's API](https://api.met.no/).
+Retrieve weather data from Norwegian Meteorological Institute's APIs easily.
+
+`yr-weather` is an API wrapper for some of the products from [MET's API](https://api.met.no/).
+To see an example on how these APIs can be used, take a look at [Yr](https://www.yr.no/), made by MET and NRK.
 
 **Available on [PyPI](https://pypi.org/project/yr-weather)**:
 
@@ -71,7 +73,7 @@ To disable caching, set `use_cache` to `False` like so:
 yr_weather.Locationforecast(headers=headers, use_cache=False)
 ```
 
-MET's Terms of Service encourage using caching, to avoid extra load on the network. Therefore, this feature is not recommended.
+MET's Terms of Service encourage using caching to avoid extra load on the network. Therefore, disabling caching and not implementing it yourself is not recommended.
 
 # Future objectives (TODOs)
 

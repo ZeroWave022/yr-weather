@@ -6,8 +6,11 @@
 Welcome to yr-weather!
 ======================
 
-Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily.
-``yr-weather`` is an API wrapper for some of the products from `Yr's API <https://api.met.no/>`__.
+Retrieve weather data from Norwegian Meteorological Institute's APIs easily.
+
+``yr-weather`` is an API wrapper for some of the products from `MET's API <https://api.met.no/>`__.
+To see an example on how these APIs can be used, take a look at `Yr <https://www.yr.no/>`__, made by MET and NRK.
+
 
 .. toctree::
    :hidden:
@@ -35,6 +38,7 @@ Supported products are:
 * Radar (v2.0)
 * Textforecast (v2.0)
 * Sunrise (v2.0)
+* Geosatellite (v1.4)
 
 Requirements
 ------------
@@ -62,53 +66,17 @@ For Linux/macOS:
 Getting started
 ---------------
 
-To get started with Locationforecast, instantiate a ``Locationforecast`` class and use the provided functions.
-A simple example follows (more features are available).
+To get started, check out the :doc:`Getting Started <gettingstarted>` page.
 
-.. code:: python
+For specific API Products, check their separate section on the documentation:
 
-   import yr_weather
+- :doc:`Locationforecast <locationforecast/index>`
+- :doc:`Radar <radar/index>`
+- :doc:`Textforecast <textforecast/index>`
+- :doc:`Sunrise <sunrise/index>`
+- :doc:`Getsatellite <geosatellite/index>`
 
-   # Replace with your own User-Agent. See MET API Terms of Service for correct User-Agents.
-   headers = {
-      "User-Agent": "Your User-Agent"
-   }
-
-   yr_client = yr_weather.Locationforecast(headers=headers)
-
-   # Get air temperature in Oslo, Norway
-   oslo_temp = yr_client.get_air_temperature(59.91, 10.75)
-
-   # Get full weather data for Oslo, Norway
-   weather_data = yr_client.get_forecast(59.91, 10.75)
-
-   print(oslo_temp)
-   # Output: 8.0
-
-   # Get data from a typed dict
-   print(weather_data["properties"]["timeseries"][0]["data"]["instant"]["details"])
-   # Example output:
-   #    {
-   #        "air_pressure_at_sea_level": 1034.7,  
-   #        "air_temperature": -1.5,
-   #        "air_temperature_percentile_10": -2.5,
-   #        "air_temperature_percentile_90": -0.9,
-   #        "cloud_area_fraction": 99.9,
-   #        "cloud_area_fraction_high": 90.9,     
-   #        "cloud_area_fraction_low": 62.9,      
-   #        "cloud_area_fraction_medium": 95.7,   
-   #        "dew_point_temperature": -4.4,        
-   #        "fog_area_fraction": 0.0,
-   #        "relative_humidity": 82.1,
-   #        "ultraviolet_index_clear_sky": 0.0,
-   #        "wind_from_direction": 11.3,
-   #        "wind_speed": 0.2,
-   #        "wind_speed_of_gust": 0.7,
-   #        "wind_speed_percentile_10": 0.3,
-   #        "wind_speed_percentile_90": 0.7
-   #    }
-
-All functions and classes are also documented with docstrings and typed, for the best developer experience.
+For the best developer experience, all functions and classes are typed and documented with docstrings.
 
 Caching
 ^^^^^^^
@@ -120,14 +88,7 @@ To disable caching, set ``use_cache`` to ``False`` like so:
    
    yr_weather.Locationforecast(headers=headers, use_cache=False)
 
-MET's Terms of Service encourage using caching, to avoid extra load on the network. Therefore, this feature is not recommended.
-
-Future objectives (TODOs)
--------------------------
-
-- Add Read the Docs documentation
-- Add further features from MET's API
-- Improve support for earlier Python versions
+MET's Terms of Service encourage using caching to avoid extra load on the network. Therefore, disabling caching and not implementing it yourself is not recommended.
 
 License
 -------
