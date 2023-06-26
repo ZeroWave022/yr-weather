@@ -1,38 +1,166 @@
 """A module with classes for the Locationforecast API."""
 
 from datetime import datetime
-from typing import Union, Optional, Literal, Dict, List
+from typing import Optional, Literal, Dict, List
+from dataclasses import dataclass, fields
 
 from .base import BaseClient
-from .types.completeforecast import CompleteForecast, CompleteUnits, CompleteTime
-from .types.compactforecast import CompactForecast, CompactInstantDetails, CompactTime
+
+
+class _ForecastData:
+    """A base class for dataclasses which use certain classmethods."""
+
+    @classmethod
+    def create(cls, given_dict):
+        """Instantiate this class with all possible keyword arguments from the given dict.
+        This function filters and removes any unexpected keyword arguments which will cause an exception.
+        """
+
+        parameters = [field.name for field in fields(cls)]
+        return cls(**{k: v for k, v in given_dict.items() if k in parameters})
+
+
+@dataclass
+class ForecastTimeDetails(_ForecastData):
+    """Details of weather data for a forecast time."""
+
+    air_pressure_at_sea_level: Optional[float] = None
+    air_temperature: Optional[float] = None
+    air_temperature_percentile_10: Optional[float] = None
+    air_temperature_percentile_90: Optional[float] = None
+    cloud_area_fraction: Optional[float] = None
+    cloud_area_fraction_high: Optional[float] = None
+    cloud_area_fraction_low: Optional[float] = None
+    cloud_area_fraction_medium: Optional[float] = None
+    dew_point_temperature: Optional[float] = None
+    fog_area_fraction: Optional[float] = None
+    relative_humidity: Optional[float] = None
+    ultraviolet_index_clear_sky: Optional[float] = None
+    wind_from_direction: Optional[float] = None
+    wind_speed: Optional[float] = None
+    wind_speed_of_gust: Optional[float] = None
+    wind_speed_percentile_10: Optional[float] = None
+    wind_speed_percentile_90: Optional[float] = None
+
+
+@dataclass
+class ForecastFutureSummary(_ForecastData):
+    """Summary for a forecast predicting the weather in the future."""
+
+    symbol_code: Optional[str] = None
+    symbol_confidence: Optional[str] = None
+
+
+@dataclass
+class ForecastFutureDetails(_ForecastData):
+    """Details for a forecast predicting the weather in the future."""
+
+    air_pressure_at_sea_level: Optional[float] = None
+    air_temperature: Optional[float] = None
+    air_temperature_max: Optional[float] = None
+    air_temperature_min: Optional[float] = None
+    air_temperature_percentile_10: Optional[float] = None
+    air_temperature_percentile_90: Optional[float] = None
+    cloud_area_fraction: Optional[float] = None
+    cloud_area_fraction_high: Optional[float] = None
+    cloud_area_fraction_low: Optional[float] = None
+    cloud_area_fraction_medium: Optional[float] = None
+    dew_point_temperature: Optional[float] = None
+    fog_area_fraction: Optional[float] = None
+    precipitation_amount: Optional[float] = None
+    precipitation_amount_max: Optional[float] = None
+    precipitation_amount_min: Optional[float] = None
+    probability_of_precipitation: Optional[float] = None
+    probability_of_thunder: Optional[float] = None
+    relative_humidity: Optional[float] = None
+    ultraviolet_index_clear_sky: Optional[float] = None
+    wind_from_direction: Optional[float] = None
+    wind_speed: Optional[float] = None
+    wind_speed_of_gust: Optional[float] = None
+    wind_speed_percentile_10: Optional[float] = None
+    wind_speed_percentile_90: Optional[float] = None
+
+
+@dataclass
+class ForecastUnits(_ForecastData):
+    """Class storing units used by a forecast."""
+
+    air_pressure_at_sea_level: Optional[str] = None
+    air_temperature: Optional[str] = None
+    air_temperature_max: Optional[str] = None
+    air_temperature_min: Optional[str] = None
+    air_temperature_percentile_10: Optional[str] = None
+    air_temperature_percentile_90: Optional[str] = None
+    cloud_area_fraction: Optional[str] = None
+    cloud_area_fraction_high: Optional[str] = None
+    cloud_area_fraction_low: Optional[str] = None
+    cloud_area_fraction_medium: Optional[str] = None
+    dew_point_temperature: Optional[str] = None
+    fog_area_fraction: Optional[str] = None
+    precipitation_amount: Optional[str] = None
+    precipitation_amount_max: Optional[str] = None
+    precipitation_amount_min: Optional[str] = None
+    probability_of_precipitation: Optional[str] = None
+    probability_of_thunder: Optional[str] = None
+    relative_humidity: Optional[str] = None
+    ultraviolet_index_clear_sky: Optional[str] = None
+    wind_from_direction: Optional[str] = None
+    wind_speed: Optional[str] = None
+    wind_speed_of_gust: Optional[str] = None
+    wind_speed_percentile_10: Optional[str] = None
+    wind_speed_percentile_90: Optional[str] = None
+
+
+@dataclass
+class ForecastGeometry(_ForecastData):
+    """Geometry data for a forecast."""
+
+    type: Optional[str] = None
+    coordinates: Optional[List[int]] = None
+
+
+class ForecastFuture:
+    """A class holding a forecast predicting the weather in the future from a specified time."""
+
+    def __init__(self, data):
+        self.summary = ForecastFutureSummary.create(data["summary"])
+
+        if "details" in data:
+            self.details = ForecastFutureDetails.create(data["details"])
+        else:
+            self.details = None
 
 
 class ForecastTime:
     """A class holding data about a forecast for a specific time."""
 
-    def __init__(self, time: Union[CompleteTime, CompactTime]) -> None:
-        self.details = time["data"]["instant"]["details"]
-        self.next_hour = time["data"]["next_1_hours"]
-        self.next_6_hours = time["data"]["next_6_hours"]
-        self.next_12_hours = time["data"]["next_12_hours"]
+    def __init__(self, time: dict) -> None:
+        self.time: str = time["time"]
+        self.details = ForecastTimeDetails.create(time["data"]["instant"]["details"])
+        self.next_hour = ForecastFuture(time["data"]["next_1_hours"])
+        self.next_6_hours = ForecastFuture(time["data"]["next_6_hours"])
+        self.next_12_hours = ForecastFuture(time["data"]["next_12_hours"])
 
 
 class Forecast:
     """A class holding a location forecast with multiple timeframes to choose from."""
 
-    def __init__(self, forecast_data: Union[CompleteForecast, CompactForecast]) -> None:
-        self.type = forecast_data["type"]
-        self.geometry = forecast_data["geometry"]
-        self.updated_at = forecast_data["properties"]["meta"]["updated_at"]
-        self.units = forecast_data["properties"]["meta"]["units"]
+    def __init__(self, forecast_data: dict) -> None:
+        self.type: str = forecast_data["type"]
+        self.geometry = ForecastGeometry.create(forecast_data["geometry"])
+
+        meta = forecast_data["properties"]["meta"]
+        self.updated_at: str = meta["updated_at"]
+        self.units = ForecastUnits.create(meta["units"])
+
+        # The timeseries used internally is kept as a dict
         self._timeseries = forecast_data["properties"]["timeseries"]
 
     def _conv_to_nearest_hour(self, date: datetime) -> datetime:
         if date.minute >= 30:
             return date.replace(microsecond=0, second=0, minute=0, hour=date.hour + 1)
-        else:
-            return date.replace(microsecond=0, second=0, minute=0)
+
+        return date.replace(microsecond=0, second=0, minute=0)
 
     def now(self) -> ForecastTime:
         """Get the newest :class:`ForecastTime` for this Forecast.
@@ -47,7 +175,7 @@ class Forecast:
         nearest_hour = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Try to get the data for the nearest hour from API data
-        filtered_time: List[Union[CompleteTime, CompactTime]] = list(
+        filtered_time: List[dict] = list(
             filter(lambda t: t["time"] == nearest_hour, self._timeseries)
         )
 
@@ -67,16 +195,17 @@ class Forecast:
 
         Returns
         -------
-        ForecastTime
+        ForecastTime | None
         """
         if not isinstance(time, datetime):
             raise ValueError(
                 "Type of time should be datetime.datetime.\nFor more information, see https://docs.python.org/3/library/datetime.html"
             )
 
+        time = self._conv_to_nearest_hour(time)
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        found_time: List[Union[CompleteTime, CompactTime]] = list(
+        found_time: List[dict] = list(
             filter(lambda t: t["time"] == formatted_time, self._timeseries)
         )
 
@@ -87,7 +216,7 @@ class Forecast:
 
 
 class Locationforecast(BaseClient):
-    """A client for interacting with the Yr Locationforecast API.
+    """A client for interacting with the MET Locationforecast API.
 
     The client has multiple functions which can be used for retrieving data from the API.
 
@@ -165,7 +294,7 @@ class Locationforecast(BaseClient):
 
     def get_air_temperature(
         self, lat: float, lon: float, altitude: Optional[int] = None
-    ) -> float:
+    ) -> Optional[float]:
         """Retrieve the air temperature at a given location.
 
         This function returns the latest data available, meaning it provides the current air temperature.
@@ -197,11 +326,11 @@ class Locationforecast(BaseClient):
 
         forecast = Forecast(data)
 
-        return float(forecast.now().details["air_temperature"])
+        return forecast.now().details.air_temperature
 
     def get_instant_data(
         self, lat: float, lon: float, altitude: Optional[int] = None
-    ) -> CompactInstantDetails:
+    ) -> ForecastTimeDetails:
         """Retrieve current weather information about a location.
 
         This includes air pressure, temperature, humidity, wind and more.
@@ -217,8 +346,8 @@ class Locationforecast(BaseClient):
 
         Returns
         -------
-        CompactInstantDetails
-            A typed dict with data received from the API.
+        ForecastTimeDetails
+            A dataclass with info received from the API.
         """
 
         url = self._base_url + f"complete?lat={lat}&lon={lon}"
@@ -235,19 +364,19 @@ class Locationforecast(BaseClient):
 
         return forecast.now().details
 
-    def get_units(self) -> CompleteUnits:
-        """Retrieve a list of units used by the Yr Locationforecast API.
+    def get_units(self) -> ForecastUnits:
+        """Retrieve a list of units used by the MET Locationforecast API.
 
         Returns
         -------
-        CompleteUnits
-            A typed dict with units currently used.
+        ForecastUnits
+            A dataclass with units currently used.
         """
 
         request = self.session.get(self._base_url + "complete?lat=0&lon=0")
 
-        data: CompleteForecast = request.json()
+        data = request.json()
 
         forecast = Forecast(data)
 
-        return forecast.units  # type: ignore
+        return forecast.units
