@@ -12,5 +12,3 @@ The :class:`Locationforecast` class is provided with multiple functions to retri
    
    Examples <examples>
    API <api>
-   completeforecast
-   compactforecast

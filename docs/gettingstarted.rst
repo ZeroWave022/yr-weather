@@ -42,34 +42,21 @@ To get started with Locationforecast using ``yr-weather``, instantiate a :class:
     # Get air temperature in Oslo, Norway
     oslo_temp = my_client.get_air_temperature(59.91, 10.75)
 
-    # Get full weather data for Oslo, Norway
-    weather_data = my_client.get_forecast(59.91, 10.75)
-
     print(oslo_temp)
     # Example output: 8.0
 
-    # Get data from a typed dict
-    print(weather_data["properties"]["timeseries"][0]["data"]["instant"]["details"])
-    # Example output:
-    # {
-    #     "air_pressure_at_sea_level": 1034.7,  
-    #     "air_temperature": -1.5,
-    #     "air_temperature_percentile_10": -2.5,
-    #     "air_temperature_percentile_90": -0.9,
-    #     "cloud_area_fraction": 99.9,
-    #     "cloud_area_fraction_high": 90.9,     
-    #     "cloud_area_fraction_low": 62.9,      
-    #     "cloud_area_fraction_medium": 95.7,   
-    #     "dew_point_temperature": -4.4,        
-    #     "fog_area_fraction": 0.0,
-    #     "relative_humidity": 82.1,
-    #     "ultraviolet_index_clear_sky": 0.0,
-    #     "wind_from_direction": 11.3,
-    #     "wind_speed": 0.2,
-    #     "wind_speed_of_gust": 0.7,
-    #     "wind_speed_percentile_10": 0.3,
-    #     "wind_speed_percentile_90": 0.7
-    # }
+    # Get full forecast for Oslo, Norway
+    forecast = my_client.get_forecast(59.91, 10.75)
+
+    # Select the forecast for the time right now (as it's possible to select a time further in the future)
+    forecast_now = forecast.now()
+
+    # You can now select from multiple data points. As an example, we show air pressure and wind speed.
+    pressure = forecast_now.details.air_pressure_at_sea_level
+    wind_speed = forecast_now.details.wind_speed
+
+    print(f"Air pressure at sea level in Oslo, Norway, is {pressure} hPa and the wind speed is {wind_speed} m/s")
+
 
 Like shown above, you can now use ``my_client`` to get full weather data, air temperature, and more.
 

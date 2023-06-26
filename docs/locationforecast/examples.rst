@@ -41,71 +41,47 @@ Getting full weather data
 
     # Full weather data for Oslo, Norway.
     # Returns a typed dict for easy access to data.
-    weather_data = my_client.get_forecast(59.91, 10.75, "compact")
+    forecast = my_client.get_forecast(59.91, 10.75)
 
-    print(weather_data)
-    # Example output:
-    # {
-    #   "type": "Feature",
-    #   "geometry": {
-    #     "type": "Point",
-    #     "coordinates": [
-    #       10.75,
-    #       59.91,
-    #       3
-    #     ]
-    #   },
-    #   "properties": {
-    #     "meta": {
-    #       "updated_at": "2023-01-28T10:36:35Z",
-    #       "units": {
-    #         "air_pressure_at_sea_level": "hPa",
-    #         "air_temperature": "celsius",
-    #         "cloud_area_fraction": "%",
-    #         "precipitation_amount": "mm",
-    #         "relative_humidity": "%",
-    #         "wind_from_direction": "degrees",
-    #         "wind_speed": "m/s"
-    #       }
-    #     },
-    #     "timeseries": [
-    #       {
-    #         "time": "2023-01-28T10:00:00Z",
-    #         "data": {
-    #           "instant": {
-    #             "details": {
-    #               "air_pressure_at_sea_level": 1018.0,
-    #               "air_temperature": -2.3,
-    #               "cloud_area_fraction": 82.2,
-    #               "relative_humidity": 94.0,
-    #               "wind_from_direction": 42.7,
-    #               "wind_speed": 0.4
-    #             }
-    #           },
-    #           "next_12_hours": {
-    #             "summary": {
-    #               "symbol_code": "cloudy"
-    #             }
-    #           },
-    #           "next_1_hours": {
-    #             "summary": {
-    #               "symbol_code": "partlycloudy_day"
-    #             },
-    #             "details": {
-    #               "precipitation_amount": 0.0
-    #             }
-    #           },
-    #           "next_6_hours": {
-    #             "summary": {
-    #               "symbol_code": "partlycloudy_day"
-    #             },
-    #             "details": {
-    #               "precipitation_amount": 0.0
-    #             }
-    #           }
-    #         }
-    #       }, ...
-    #     ]
-    #   }
-    # }
+    forecast_now = forecast.now()
 
+    air_temp = forecast_now.details.air_temperature
+
+    print(f"Current air temperature is {air_temp} °C")
+
+    # There are multiple attributes available, if the data is supplied by the MET API.
+    # The complete forecast can give access to these details:
+    # air_pressure_at_sea_level: float | None
+    # air_temperature: float | None
+    # air_temperature_percentile_10: float | None
+    # air_temperature_percentile_90: float | None
+    # cloud_area_fraction: float | None
+    # cloud_area_fraction_high: float | None
+    # cloud_area_fraction_low: float | None
+    # cloud_area_fraction_medium: float | None
+    # dew_point_temperature: float | None
+    # fog_area_fraction: float | None
+    # relative_humidity: float | None
+    # ultraviolet_index_clear_sky: float | None
+    # wind_from_direction: float | None
+    # wind_speed: float | None
+    # wind_speed_of_gust: float | None
+    # wind_speed_percentile_10: float | None
+    # wind_speed_percentile_90: float | None
+
+Getting future weather predictions
+----------------------------------
+
+.. code-block:: python
+
+    # Full weather data for Oslo, Norway.
+    forecast = my_client.get_forecast(59.91, 10.75)
+
+    forecast_now = forecast.now()
+
+    # A ForecastFuture dataclass storing info about the weather in 6 hours
+    next_6_hrs = forecast_now.next_6_hours
+
+    expected_temp = next_6_hrs.details.air_temperature # This value may be None, if no value is received from the API
+
+    print(f"In the next 6 hours, the expected temperature is {expected_temp} °C")

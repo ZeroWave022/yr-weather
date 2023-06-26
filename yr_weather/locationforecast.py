@@ -120,7 +120,15 @@ class ForecastGeometry(_ForecastData):
 
 
 class ForecastFuture:
-    """A class holding a forecast predicting the weather in the future from a specified time."""
+    """A class holding a forecast predicting the weather in the future from a specified time.
+
+    Attributes
+    ----------
+    summary: ForecastFutureSummary
+        A summary for this forecast.
+    details: ForecastFutureDetails
+        The forecast data for this forecast.
+    """
 
     def __init__(self, data):
         self.summary = ForecastFutureSummary.create(data["summary"])
@@ -132,7 +140,21 @@ class ForecastFuture:
 
 
 class ForecastTime:
-    """A class holding data about a forecast for a specific time."""
+    """A class holding data about a forecast for a specific time.
+
+    Attributes
+    ----------
+    time: str
+        The ISO 8601 timestamp in UTC time for this ForecastTime.
+    details: ForecastTimeDetails
+        The forecast data for this ForecastTime.
+    next_hour: ForecastFuture
+        A ForecastFuture with data about the forecast the next hour.
+    next_6_hours: ForecastFuture
+        A ForecastFuture with data about the forecast the 6 hours.
+    next_12_hours: ForecastFuture
+        A ForecastFuture with data about the forecast the 12 hours.
+    """
 
     def __init__(self, time: dict) -> None:
         self.time: str = time["time"]
@@ -143,7 +165,19 @@ class ForecastTime:
 
 
 class Forecast:
-    """A class holding a location forecast with multiple timeframes to choose from."""
+    """A class holding a location forecast with multiple timeframes to choose from.
+
+    Attributes
+    ----------
+    type: str
+        MET API service type (always `"Feature"`).
+    geometry: ForecastGeometry
+        Geometry data for this forecast.
+    updated_at: str
+        The ISO 8601 timestamp in UTC time at which this forecast was last updated.
+    units: ForecastUnits
+        The units used by this forecast.
+    """
 
     def __init__(self, forecast_data: dict) -> None:
         self.type: str = forecast_data["type"]
@@ -185,7 +219,7 @@ class Forecast:
         return ForecastTime(self._timeseries[0])
 
     def get_forecast_time(self, time: datetime) -> Optional[ForecastTime]:
-        """Get a certain :class:`ForecastTime` by specifiying the time.
+        """Get a certain :class:`ForecastTime` by specifying the time.
         The time will be rounded to the nearest hour.
 
         Parameters
@@ -223,20 +257,7 @@ class Locationforecast(BaseClient):
     It must be initialized with a ``headers`` dict, which at least includes a User-Agent.
     The headers will be used with the :mod:`requests` library.
 
-    Example 1. Getting a location forecast for a specified location:
-
-    .. code-block:: python
-
-        import yr_weather
-
-        headers = {
-            "User-Agent": "Your User-Agent"
-        }
-
-        yr_client = yr_weather.Locationforecast(headers=headers)
-
-        # Get weather data for Oslo, Norway.
-        weather_data = yr_client.get_forecast(59.91, 10.75)
+    For usage examples, see the documentation.
     """
 
     def __init__(self, headers: Dict[str, str], use_cache=True) -> None:
