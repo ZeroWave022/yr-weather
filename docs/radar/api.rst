@@ -1,4 +1,4 @@
-.. currentmodule:: yr_weather.types.radar
+.. currentmodule:: yr_weather.radar
 
 Radar: API Reference
 ====================
@@ -7,3 +7,22 @@ Radar: API Reference
    :members:
    :undoc-members:
    :show-inheritance:
+
+Dataclasses
+-----------
+
+.. autoclass:: RadarContentAvailable
+   :members:
+   :undoc-members:
+
+.. autoclass:: RadarOptions
+   :members:
+   :undoc-members:
+
+.. autoclass:: RadarStatus
+   :members:
+   :undoc-members:
+
+.. autoclass:: RadarGlobalStatus
+   :members:
+   :undoc-members:
