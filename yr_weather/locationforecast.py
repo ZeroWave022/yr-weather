@@ -124,9 +124,9 @@ class ForecastFuture:
 
     Attributes
     ----------
-    summary: ForecastFutureSummary
+    summary: :class:`.ForecastFutureSummary`
         A summary for this forecast.
-    details: ForecastFutureDetails
+    details: :class:`.ForecastFutureDetails`
         The forecast data for this forecast.
     """
 
@@ -144,15 +144,15 @@ class ForecastTime:
 
     Attributes
     ----------
-    time: str
+    time: :class:`str`
         The ISO 8601 timestamp in UTC time for this ForecastTime.
-    details: ForecastTimeDetails
+    details: :class:`.ForecastTimeDetails`
         The forecast data for this ForecastTime.
-    next_hour: ForecastFuture
+    next_hour: :class:`.ForecastFuture`
         A ForecastFuture with data about the forecast the next hour.
-    next_6_hours: ForecastFuture
+    next_6_hours: :class:`.ForecastFuture`
         A ForecastFuture with data about the forecast the 6 hours.
-    next_12_hours: ForecastFuture
+    next_12_hours: :class:`.ForecastFuture`
         A ForecastFuture with data about the forecast the 12 hours.
     """
 
@@ -169,13 +169,13 @@ class Forecast:
 
     Attributes
     ----------
-    type: str
+    type: :class:`str`
         MET API service type (always `"Feature"`).
-    geometry: ForecastGeometry
+    geometry: :class:`.ForecastGeometry`
         Geometry data for this forecast.
-    updated_at: str
+    updated_at: :class:`str`
         The ISO 8601 timestamp in UTC time at which this forecast was last updated.
-    units: ForecastUnits
+    units: :class:`.ForecastUnits`
         The units used by this forecast.
     """
 
@@ -201,7 +201,7 @@ class Forecast:
 
         Returns
         -------
-        ForecastTime
+        :class:`.ForecastTime`
         """
         now = datetime.utcnow()
         time = self._conv_to_nearest_hour(now)
@@ -229,7 +229,7 @@ class Forecast:
 
         Returns
         -------
-        ForecastTime | None
+        :class:`.ForecastTime` | None
         """
         if not isinstance(time, datetime):
             raise ValueError(
@@ -296,8 +296,8 @@ class Locationforecast(APIClient):
 
         Returns
         -------
-        Forecast
-            An instance of :class:`Forecast` with helper functions and values from the API.
+        :class:`.Forecast`
+            An instance of :class:`.Forecast` with helper functions and values from the API.
         """
 
         if forecast_type not in ["complete", "compact"]:
@@ -367,7 +367,7 @@ class Locationforecast(APIClient):
 
         Returns
         -------
-        ForecastTimeDetails
+        :class:`.ForecastTimeDetails`
             A dataclass with info received from the API.
         """
 
@@ -390,7 +390,7 @@ class Locationforecast(APIClient):
 
         Returns
         -------
-        ForecastUnits
+        :class:`.ForecastUnits`
             A dataclass with units currently used.
         """
 

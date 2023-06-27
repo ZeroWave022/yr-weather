@@ -37,7 +37,7 @@ class Geosatellite(APIClient):
 
         Returns
         -------
-        requests.Response
+        :class:`requests.Response`
             A Response class enabling saving or further management of the data received.
         """
         area_args = list(get_args(SatArea))

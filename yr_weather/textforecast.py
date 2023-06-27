@@ -32,7 +32,7 @@ class Textforecast(APIClient):
 
         Returns
         -------
-        TextForecasts | str
+        :class:`.TextForecasts` | :class:`str`
             A typed dict with text forecasts for the selected area, defined in the forecast parameter.
             If XML conversion fails, the response text for the request is returned instead.
         """
@@ -76,7 +76,7 @@ class Textforecast(APIClient):
 
         Returns
         -------
-        TextAreas | str
+        :class:`.TextAreas` | :class:`str`
             A typed dict with land, sea or coast areas, their polygons and names.
             If XML conversion fails, the response text for the request is returned instead.
         """
