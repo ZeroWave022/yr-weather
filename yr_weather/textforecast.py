@@ -4,12 +4,12 @@ from typing import Literal, Union
 import warnings
 from xml.parsers.expat import ExpatError
 import xmltodict
-from .base import BaseClient
+from .client import APIClient
 
 from .types.textforecast import TextForecasts, TextAreas
 
 
-class Textforecast(BaseClient):
+class Textforecast(APIClient):
     """A client for interacting with the Yr Textforecast API."""
 
     def __init__(self, headers=None, use_cache=True) -> None:

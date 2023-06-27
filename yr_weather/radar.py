@@ -4,7 +4,7 @@ from typing import Optional, Literal, List, get_args
 from dataclasses import dataclass
 from datetime import datetime
 import requests
-from .base import BaseClient
+from .client import APIClient
 
 from .types.radar import (
     RadarArea,
@@ -77,7 +77,7 @@ class RadarGlobalStatus:
     radars: List[RadarStatus]
 
 
-class Radar(BaseClient):
+class Radar(APIClient):
     """A client for interacting with the MET Radar API."""
 
     def __init__(self, headers=None, use_cache=True) -> None:

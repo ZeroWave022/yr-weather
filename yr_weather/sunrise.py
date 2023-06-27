@@ -3,12 +3,12 @@
 from datetime import datetime
 from typing import Optional, get_args
 import requests
-from .base import BaseClient
+from .client import APIClient
 
 from .types.sunrise import SunriseData, DetailLiteral
 
 
-class Sunrise(BaseClient):
+class Sunrise(APIClient):
     """A client for interacting with the Yr Sunrise API."""
 
     def __init__(self, headers=None, use_cache=True) -> None:

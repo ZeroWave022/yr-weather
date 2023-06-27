@@ -1,12 +1,12 @@
-"""A module for base classes which other modules use."""
+"""A module for API classes which other modules depend on."""
 
 from typing import Optional, Union, Dict
 import requests
 from requests_cache import CachedSession
 
 
-class BaseClient:
-    """A base client other clients inherit."""
+class APIClient:
+    """A base API client other clients inherit."""
 
     def __init__(
         self, headers: Optional[Dict[str, str]] = None, use_cache: bool = True

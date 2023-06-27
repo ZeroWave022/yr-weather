@@ -1,14 +1,14 @@
-"""A module with classes for the Geosatellite API."""
+"""A module with classes for the MET Geosatellite API."""
 
 from typing import Optional, Literal, get_args
 import requests
-from .base import BaseClient
+from .client import APIClient
 
 from .types.geosatellite import SatArea
 
 
-class Geosatellite(BaseClient):
-    """A client for interacting with the Yr Geosatellite API."""
+class Geosatellite(APIClient):
+    """A client for interacting with the MET Geosatellite API."""
 
     def __init__(self, headers=None, use_cache=True) -> None:
         super().__init__(headers, use_cache)

@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Optional, Literal, Dict, List
 from dataclasses import dataclass, fields
 
-from .base import BaseClient
+from .client import APIClient
 
 
 class _ForecastData:
@@ -249,7 +249,7 @@ class Forecast:
         return None
 
 
-class Locationforecast(BaseClient):
+class Locationforecast(APIClient):
     """A client for interacting with the MET Locationforecast API.
 
     The client has multiple functions which can be used for retrieving data from the API.
