@@ -24,7 +24,7 @@ To see an example on how these APIs can be used, take a look at `Yr <https://www
    radar/index
    sunrise/index
    geosatellite/index
-   base
+   APIClient <client>
 
 **Available on** `PyPI <https://pypi.org/project/yr-weather>`__:
 
