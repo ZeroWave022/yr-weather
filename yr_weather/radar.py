@@ -1,21 +1,84 @@
 """A module with classes for the Radar API."""
 
-from typing import Optional, get_args
+from typing import Optional, Literal, List, get_args
+from dataclasses import dataclass
 from datetime import datetime
 import requests
 from .base import BaseClient
 
 from .types.radar import (
-    RadarOptions,
-    RadarStatus,
     RadarArea,
     RadarType,
     RadarContentType,
 )
 
 
+@dataclass
+class RadarContentAvailable:
+    """A dataclass storing available areas and content types for a radar type."""
+
+    areas: List[RadarArea]
+    content: RadarContentType
+
+
+@dataclass
+class RadarOptions:
+    """A dataclass storing available options for various radar types."""
+
+    five_level_reflectivity: RadarContentAvailable
+    accumulated_01h: RadarContentAvailable
+    accumulated_02h: RadarContentAvailable
+    accumulated_03h: RadarContentAvailable
+    accumulated_04h: RadarContentAvailable
+    accumulated_05h: RadarContentAvailable
+    accumulated_06h: RadarContentAvailable
+    accumulated_07h: RadarContentAvailable
+    accumulated_08h: RadarContentAvailable
+    accumulated_09h: RadarContentAvailable
+    accumulated_10h: RadarContentAvailable
+    accumulated_11h: RadarContentAvailable
+    accumulated_12h: RadarContentAvailable
+    accumulated_13h: RadarContentAvailable
+    accumulated_14h: RadarContentAvailable
+    accumulated_15h: RadarContentAvailable
+    accumulated_16h: RadarContentAvailable
+    accumulated_17h: RadarContentAvailable
+    accumulated_18h: RadarContentAvailable
+    accumulated_19h: RadarContentAvailable
+    accumulated_20h: RadarContentAvailable
+    accumulated_21h: RadarContentAvailable
+    accumulated_22h: RadarContentAvailable
+    accumulated_23h: RadarContentAvailable
+    accumulated_24h: RadarContentAvailable
+    fir_preciptype: RadarContentAvailable
+    lx_reflectivity: RadarContentAvailable
+    preciptype: RadarContentAvailable
+    reflectivity: RadarContentAvailable
+
+
+@dataclass
+class RadarStatus:
+    """A dataclass storing a radar status."""
+
+    area: str
+    due_date: Optional[str]
+    fault_code: Optional[Literal["PS", "VP", "CO", "TE"]]
+    last: str
+    products: List[RadarArea]
+    sitename: str
+    stability: str
+
+
+@dataclass
+class RadarGlobalStatus:
+    """A dataclass storing statuses for all radars."""
+
+    last_update: str
+    radars: List[RadarStatus]
+
+
 class Radar(BaseClient):
-    """A client for interacting with the Yr Radar API."""
+    """A client for interacting with the MET Radar API."""
 
     def __init__(self, headers=None, use_cache=True) -> None:
         super().__init__(headers, use_cache)
@@ -37,13 +100,13 @@ class Radar(BaseClient):
         Parameters
         ----------
         area: :data:`.RadarArea`
-            A string of one the of the possible values for area, based on valid Radar Yr API literals.
+            A string of one the of the possible values for area, based on valid MET Radar API literals.
         radar_type: :data:`.RadarType`
-            A string of one of the possible values for type, based on valid Radar Yr API literals.
+            A string of one of the possible values for type, based on valid MET Radar API literals.
         content: :data:`.RadarContentType`
             Optional: Either the string "image" or "animation", based on the desired result from the API. Default is ``"image"``.
         time: Optional[:class:`str`]
-            An optional string containing the time when the image was taken, provided in ISO 8601 format. Default is :class:`None`.
+            An optional string containing the time when the image was taken, provided in ISO 8601 format. Default is None.
 
         Returns
         -------
@@ -119,36 +182,111 @@ class Radar(BaseClient):
         return self.session.get(url, stream=True)
 
     def get_available_radars(self) -> RadarOptions:
-        """Get a dict of available typed of radars.
+        """Get available types of radars.
 
         This function retrieves all types of radars, as well as which areas they are available in.
-        The dict also includes available types of content (image or animation).
+        The dataclass returned also includes available types of content (image or animation).
 
         Returns
         -------
         :class:`.RadarOptions`
-            A TypedDict with available radars and additional info.
+            A dataclass with available radars and additional info.
         """
         url = self._base_url + "radaroptions"
 
         request = self.session.get(url)
 
-        options: RadarOptions = request.json()
+        options: dict = request.json()
 
-        return options
+        # Rename to allowed attribute name for the dataclass which will be instantiated
+        options["five_level_reflectivity"] = options["5level_reflectivity"]
+        del options["5level_reflectivity"]
 
-    def get_status(self) -> RadarStatus:
+        # Convert all radar option dicts to dataclasses
+        for option, value in options.items():
+            options[option] = RadarContentAvailable(
+                areas=value["area"], content=value["content"]
+            )
+
+        return RadarOptions(**options)
+
+    def get_all_statuses(self) -> RadarGlobalStatus:
         """Get the operational status of all radars.
 
         Returns
         -------
         :class:`.RadarStatus`
-            A TypedDict with statuses of radars.
+            A dataclass with statuses of radars.
         """
         url = self._base_url + "status"
 
         request = self.session.get(url)
 
-        status: RadarStatus = request.json()
+        status: dict = request.json()
 
-        return status
+        radars = []
+
+        # This renames properties to match python style
+        # Also converts from dicts to AreaStatus dataclasses
+        for radar in status["Radars"]:
+            radars.append(
+                RadarStatus(
+                    area=radar["Area"],
+                    due_date=radar["DueDate"],
+                    fault_code=radar["FaultCode"],
+                    last=radar["Last"],
+                    products=radar["Products"],
+                    sitename=radar["Sitename"],
+                    stability=radar["Stability"],
+                )
+            )
+
+        return RadarGlobalStatus(last_update=status["Last_update"], radars=radars)
+
+    def get_status(
+        self, area: Optional[str] = None, sitename: Optional[str] = None
+    ) -> Optional[RadarStatus]:
+        """Get the operational status of a single radar.
+
+        Either ``area`` or ``sitename`` must be used to find a radar.
+
+        Parameters
+        ----------
+        area: Optional[:class:`str`]
+            The name of the area of the radar to search for.
+        sitename: Optional[:class:`str`]
+            The sitename of the radar to search for.
+
+        Returns
+        -------
+        Optional[:class:`.RadarStatus`]
+            A dataclass with radar status. Can be None if no radar is found.
+        """
+        if not area and not sitename:
+            raise ValueError("Neither an area or a sitename was specified.")
+
+        url = self._base_url + "status"
+
+        request = self.session.get(url)
+
+        status: dict = request.json()
+
+        if area:
+            found = list(filter(lambda r: r["Area"] == area, status["Radars"]))
+        else:
+            found = list(filter(lambda r: r["Sitename"] == sitename, status["Radars"]))
+
+        if len(found) == 0:
+            return None
+
+        radar = found[0]
+
+        return RadarStatus(
+            area=radar["Area"],
+            due_date=radar["DueDate"],
+            fault_code=radar["FaultCode"],
+            last=radar["Last"],
+            products=radar["Products"],
+            sitename=radar["Sitename"],
+            stability=radar["Stability"],
+        )
