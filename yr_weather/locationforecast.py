@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional, Literal, Dict, List
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 
 from .client import APIClient
 
@@ -118,7 +118,7 @@ class ForecastGeometry(_ForecastData):
     type: Optional[str] = None
     coordinates: Optional[List[int]] = None
 
-
+@dataclass
 class ForecastFuture:
     """A class holding a forecast predicting the weather in the future from a specified time.
 
@@ -129,16 +129,17 @@ class ForecastFuture:
     details: :class:`.ForecastFutureDetails`
         The forecast data for this forecast.
     """
+    summary: Optional[ForecastFutureSummary] = None
+    details: Optional[ForecastFutureDetails] = None
 
-    def __init__(self, data):
-        self.summary = ForecastFutureSummary.create(data["summary"])
+    def __post_init__(self):
+        if self.summary:
+            self.summary = ForecastFutureSummary.create(self.summary)
 
-        if "details" in data:
-            self.details = ForecastFutureDetails.create(data["details"])
-        else:
-            self.details = None
+        if self.details:
+            self.details = ForecastFutureDetails.create(self.details)
 
-
+@dataclass
 class ForecastTime:
     """A class holding data about a forecast for a specific time.
 
@@ -155,13 +156,19 @@ class ForecastTime:
     next_12_hours: :class:`.ForecastFuture`
         A ForecastFuture with data about the forecast the 12 hours.
     """
+    _data: dict
+    time: str = field(init=False)
+    details: ForecastTimeDetails = field(init=False)
+    next_hour: ForecastFuture = field(init=False)
+    next_6_hours: ForecastFuture = field(init=False)
+    next_12_hours: ForecastFuture = field(init=False)
 
-    def __init__(self, time: dict) -> None:
-        self.time: str = time["time"]
-        self.details = ForecastTimeDetails.create(time["data"]["instant"]["details"])
-        self.next_hour = ForecastFuture(time["data"]["next_1_hours"])
-        self.next_6_hours = ForecastFuture(time["data"]["next_6_hours"])
-        self.next_12_hours = ForecastFuture(time["data"]["next_12_hours"])
+    def __post_init__(self) -> None:
+        self.time = self._data["time"]
+        self.details = ForecastTimeDetails.create(self._data["data"]["instant"]["details"])
+        self.next_hour = ForecastFuture(**self._data["data"]["next_1_hours"])
+        self.next_6_hours = ForecastFuture(**self._data["data"]["next_6_hours"])
+        self.next_12_hours = ForecastFuture(**self._data["data"]["next_12_hours"])
 
 
 class Forecast:
@@ -170,7 +177,7 @@ class Forecast:
     Attributes
     ----------
     type: :class:`str`
-        MET API service type (always `"Feature"`).
+        MET API service type (always ``"Feature"``).
     geometry: :class:`.ForecastGeometry`
         Geometry data for this forecast.
     updated_at: :class:`str`
