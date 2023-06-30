@@ -7,8 +7,26 @@ jobs:
     name: Black
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: psf/black@stable
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Black
+        uses: psf/black@stable
         with:
           options: "--check --verbose"
           src: "."
+  mypy:
+    name: Mypy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install mypy
+        run: |
+          pip install mypy
+      - name: Run mypy
+        run: |
+          mypy yr_weather/
