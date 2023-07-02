@@ -118,6 +118,7 @@ class ForecastGeometry(_ForecastData):
     type: Optional[str] = None
     coordinates: Optional[List[int]] = None
 
+
 @dataclass
 class ForecastFuture:
     """A class holding a forecast predicting the weather in the future from a specified time.
@@ -129,6 +130,7 @@ class ForecastFuture:
     details: :class:`.ForecastFutureDetails`
         The forecast data for this forecast.
     """
+
     summary: Optional[ForecastFutureSummary] = None
     details: Optional[ForecastFutureDetails] = None
 
@@ -138,6 +140,7 @@ class ForecastFuture:
 
         if self.details:
             self.details = ForecastFutureDetails.create(self.details)
+
 
 @dataclass
 class ForecastTime:
@@ -156,6 +159,7 @@ class ForecastTime:
     next_12_hours: :class:`.ForecastFuture`
         A ForecastFuture with data about the forecast the 12 hours.
     """
+
     _data: dict
     time: str = field(init=False)
     details: ForecastTimeDetails = field(init=False)
@@ -165,7 +169,9 @@ class ForecastTime:
 
     def __post_init__(self) -> None:
         self.time = self._data["time"]
-        self.details = ForecastTimeDetails.create(self._data["data"]["instant"]["details"])
+        self.details = ForecastTimeDetails.create(
+            self._data["data"]["instant"]["details"]
+        )
         self.next_hour = ForecastFuture(**self._data["data"]["next_1_hours"])
         self.next_6_hours = ForecastFuture(**self._data["data"]["next_6_hours"])
         self.next_12_hours = ForecastFuture(**self._data["data"]["next_12_hours"])
