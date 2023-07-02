@@ -42,5 +42,18 @@ yr_weather = ["py.typed"]
 
 [tool.mypy]
 exclude = [
-    "venv/"
+    ".venv/",
+    "docs/",
+    "tests/"
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib"
+]
+testpaths = [
+    "tests"
+]
+pythonpath = [
+    "."
 ]
