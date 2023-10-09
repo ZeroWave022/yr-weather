@@ -26,6 +26,6 @@ types-urllib3==1.26.25.13
 types-xmltodict==0.13.0.2
 typing_extensions==4.7.0 
 url-normalize==1.4.3     
-urllib3==2.0.3
+urllib3==2.0.6
 virtualenv==20.23.1
 xmltodict==0.13.0
