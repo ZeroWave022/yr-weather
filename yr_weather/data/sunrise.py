@@ -1,7 +1,9 @@
 """Classes storing data used by yr_weather.sunrise"""
 
 from dataclasses import dataclass
-from typing import Optional, Literal, List
+from typing import Literal, List
+
+from yr_weather.api_types.sunrise import APISunData, APIMoonData, APIEventData
 
 
 @dataclass
@@ -9,22 +11,18 @@ class EventsGeometry:
     """A dataclass holding coordinates."""
 
     coordinates: List[float]
-    type: Literal["Point"]
+    type: str
 
 
-@dataclass
 class CommonEventsData:
-    """A dataclass with common event data for both sun and moon events."""
+    """A class with common event data for both sun and moon events."""
 
-    type: Optional[str] = None
-    copyright: Optional[str] = None
-    license_url: Optional[str] = None
-    geometry: Optional[EventsGeometry] = None
-    interval: Optional[List[str]] = None
-
-    def __post_init__(self):
-        if self.geometry:
-            self.geometry = EventsGeometry(**self.geometry)
+    def __init__(self, data: APIEventData):
+        self.type = data["type"]
+        self.copyright = data["copyright"]
+        self.license_url = data["licenseURL"]
+        self.geometry = EventsGeometry(**data["geometry"])
+        self.interval = data["when"]["interval"]
 
 
 @dataclass
@@ -47,14 +45,8 @@ class TimeWithElevation:
 class SunEvents(CommonEventsData):
     """A class with sun event data."""
 
-    def __init__(self, data: dict):
-        super().__init__(
-            type=data["type"],
-            copyright=data["copyright"],
-            license_url=data["licenseURL"],
-            geometry=data["geometry"],
-            interval=data["when"]["interval"],
-        )
+    def __init__(self, data: APISunData):
+        super().__init__(data)
 
         props = data["properties"]
 
@@ -68,14 +60,8 @@ class SunEvents(CommonEventsData):
 class MoonEvents(CommonEventsData):
     """A class with moon event data."""
 
-    def __init__(self, data: dict):
-        super().__init__(
-            type=data["type"],
-            copyright=data["copyright"],
-            license_url=data["licenseURL"],
-            geometry=data["geometry"],
-            interval=data["when"]["interval"],
-        )
+    def __init__(self, data: APIMoonData):
+        super().__init__(data)
 
         props = data["properties"]
 

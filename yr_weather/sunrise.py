@@ -1,11 +1,12 @@
 """A module with classes for the Sunrise API."""
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 import requests
 from .client import APIClient
 
 from .data.sunrise import SunEvents, MoonEvents
+from .api_types.sunrise import APISunData, APIMoonData
 
 
 class Sunrise(APIClient):
@@ -16,7 +17,7 @@ class Sunrise(APIClient):
 
         self._base_url += "sunrise/3.0/"
 
-    def _get_events(self, event_type: str, **kwargs) -> dict:
+    def _get_events(self, event_type: str, **kwargs) -> Union[APISunData, APIMoonData]:
         date = kwargs.get("date")
         lat = kwargs.get("lat")
         lon = kwargs.get("lon")
@@ -88,7 +89,7 @@ class Sunrise(APIClient):
         -------
         :class:`.SunEvents`
         """
-        data = self._get_events("sun", date=date, lat=lat, lon=lon, offset=offset)
+        data: APISunData = self._get_events("sun", date=date, lat=lat, lon=lon, offset=offset)  # type: ignore[assignment]
 
         return SunEvents(data)
 
@@ -118,7 +119,7 @@ class Sunrise(APIClient):
         -------
         :class:`.MoonEvents`
         """
-        data = self._get_events("moon", date=date, lat=lat, lon=lon, offset=offset)
+        data: APIMoonData = self._get_events("moon", date=date, lat=lat, lon=lon, offset=offset)  # type: ignore[assignment]
 
         return MoonEvents(data)
 

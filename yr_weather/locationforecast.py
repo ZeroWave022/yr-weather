@@ -4,6 +4,7 @@ from typing import Optional, Literal, Dict
 from .client import APIClient
 
 from .data.locationforecast import Forecast, ForecastTimeDetails, ForecastUnits
+from .api_types.locationforecast import APIForecast
 
 
 class Locationforecast(APIClient):
@@ -66,7 +67,7 @@ class Locationforecast(APIClient):
             self._base_url + f"{forecast_type}?lat={lat}&lon={lon}"
         )
 
-        weather_data = request.json()
+        weather_data: APIForecast = request.json()
 
         return Forecast(weather_data)
 
@@ -100,7 +101,7 @@ class Locationforecast(APIClient):
             url += f"&altitude={altitude}"
 
         request = self.session.get(url)
-        data = request.json()
+        data: APIForecast = request.json()
 
         forecast = Forecast(data)
 
@@ -136,7 +137,7 @@ class Locationforecast(APIClient):
             url += f"&altitude={altitude}"
 
         request = self.session.get(url)
-        data = request.json()
+        data: APIForecast = request.json()
 
         forecast = Forecast(data)
 
@@ -153,7 +154,7 @@ class Locationforecast(APIClient):
 
         request = self.session.get(self._base_url + "complete?lat=0&lon=0")
 
-        data = request.json()
+        data: APIForecast = request.json()
 
         forecast = Forecast(data)
 

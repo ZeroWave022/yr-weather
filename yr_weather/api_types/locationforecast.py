@@ -142,7 +142,7 @@ class APIForecastGeometry(TypedDict):
 
 
 class APIForecast(TypedDict):
-    """APIForecast forecast data"""
+    """Full API forecast data"""
 
     type: str
     geometry: APIForecastGeometry

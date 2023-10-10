@@ -2,7 +2,14 @@
 
 from datetime import datetime
 from typing import Optional, List
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, fields
+
+from yr_weather.api_types.locationforecast import (
+    APIForecast,
+    APIForecastTime,
+    APIForecastFutureSummary,
+    APIForecastFutureDetails,
+)
 
 
 class _ForecastData:
@@ -129,18 +136,15 @@ class ForecastFuture:
         The forecast data for this forecast.
     """
 
-    summary: Optional[ForecastFutureSummary] = None
-    details: Optional[ForecastFutureDetails] = None
-
-    def __post_init__(self):
-        if self.summary:
-            self.summary = ForecastFutureSummary.create(self.summary)
-
-        if self.details:
-            self.details = ForecastFutureDetails.create(self.details)
+    def __init__(
+        self,
+        summary: Optional[APIForecastFutureSummary] = None,
+        details: Optional[APIForecastFutureDetails] = None,
+    ):
+        self.summary = ForecastFutureSummary.create(summary) if summary else None
+        self.details = ForecastFutureDetails.create(details) if details else None
 
 
-@dataclass
 class ForecastTime:
     """A class holding data about a forecast for a specific time.
 
@@ -158,21 +162,12 @@ class ForecastTime:
         A ForecastFuture with data about the forecast the 12 hours.
     """
 
-    _data: dict
-    time: str = field(init=False)
-    details: ForecastTimeDetails = field(init=False)
-    next_hour: ForecastFuture = field(init=False)
-    next_6_hours: ForecastFuture = field(init=False)
-    next_12_hours: ForecastFuture = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.time = self._data["time"]
-        self.details = ForecastTimeDetails.create(
-            self._data["data"]["instant"]["details"]
-        )
-        self.next_hour = ForecastFuture(**self._data["data"]["next_1_hours"])
-        self.next_6_hours = ForecastFuture(**self._data["data"]["next_6_hours"])
-        self.next_12_hours = ForecastFuture(**self._data["data"]["next_12_hours"])
+    def __init__(self, _data: APIForecastTime):
+        self.time = _data["time"]
+        self.details = ForecastTimeDetails.create(_data["data"]["instant"]["details"])
+        self.next_hour = ForecastFuture(**_data["data"]["next_1_hours"])
+        self.next_6_hours = ForecastFuture(**_data["data"]["next_6_hours"])
+        self.next_12_hours = ForecastFuture(**_data["data"]["next_12_hours"])
 
 
 class Forecast:
@@ -190,12 +185,12 @@ class Forecast:
         The units used by this forecast.
     """
 
-    def __init__(self, forecast_data: dict) -> None:
-        self.type: str = forecast_data["type"]
+    def __init__(self, forecast_data: APIForecast) -> None:
+        self.type = forecast_data["type"]
         self.geometry = ForecastGeometry.create(forecast_data["geometry"])
 
         meta = forecast_data["properties"]["meta"]
-        self.updated_at: str = meta["updated_at"]
+        self.updated_at = meta["updated_at"]
         self.units = ForecastUnits.create(meta["units"])
 
         # The timeseries used internally is kept as a dict
@@ -220,7 +215,7 @@ class Forecast:
         nearest_hour = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Try to get the data for the nearest hour from API data
-        filtered_time: List[dict] = list(
+        filtered_time = list(
             filter(lambda t: t["time"] == nearest_hour, self._timeseries)
         )
 
@@ -250,7 +245,7 @@ class Forecast:
         time = self._conv_to_nearest_hour(time)
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        found_time: List[dict] = list(
+        found_time = list(
             filter(lambda t: t["time"] == formatted_time, self._timeseries)
         )
 
