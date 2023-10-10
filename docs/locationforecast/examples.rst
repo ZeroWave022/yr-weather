@@ -11,7 +11,7 @@ The examples assume you have set up a :class:`Locationforecast` client with a va
     
     import yr_weather
 
-    # Replace with your own User-Agent. See MET API Terms of Service for correct User-Agents.
+    # Replace with your own User-Agent. See MET API Terms of Service for correct user agents.
     headers = {
         "User-Agent": "Your User-Agent"
     }

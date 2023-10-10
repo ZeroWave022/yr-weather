@@ -138,7 +138,7 @@ Sunrise
 -------
 
 The Sunrise submodule allows you to calculate various events, such as sunrises, sunsets, low moons, high moons and so on.
-For more information about the API itself, check `MET's documentation <https://api.met.no/weatherapi/sunrise/2.0/documentation>`__.
+For more information about the API itself, check `MET's documentation <https://api.met.no/weatherapi/sunrise/3.0/documentation>`__.
 
 In the example below, we use the :meth:`Sunrise.get_detail` function to get data about the sunset.
 

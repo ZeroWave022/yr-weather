@@ -12,11 +12,9 @@ Locationforecast: API Reference
 
 .. autoclass:: yr_weather.locationforecast.ForecastTime
    :members:
-   :undoc-members:
 
 .. autoclass:: yr_weather.locationforecast.ForecastFuture
    :members:
-   :undoc-members:
 
 Dataclasses
 -----------

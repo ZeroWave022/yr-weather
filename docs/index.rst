@@ -37,7 +37,7 @@ Supported products are:
 * Locationforecast (v2.0)
 * Radar (v2.0)
 * Textforecast (v2.0)
-* Sunrise (v2.0)
+* Sunrise (v3.0)
 * Geosatellite (v1.4)
 
 Requirements
