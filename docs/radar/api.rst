@@ -11,18 +11,18 @@ Radar: API Reference
 Dataclasses
 -----------
 
-.. autoclass:: RadarContentAvailable
+.. autoclass:: yr_weather.data.radar.RadarContentAvailable
    :members:
    :undoc-members:
 
-.. autoclass:: RadarOptions
+.. autoclass:: yr_weather.data.radar.RadarOptions
    :members:
    :undoc-members:
 
-.. autoclass:: RadarStatus
+.. autoclass:: yr_weather.data.radar.RadarStatus
    :members:
    :undoc-members:
 
-.. autoclass:: RadarGlobalStatus
+.. autoclass:: yr_weather.data.radar.RadarGlobalStatus
    :members:
    :undoc-members:

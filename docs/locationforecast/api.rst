@@ -6,34 +6,34 @@ Locationforecast: API Reference
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: yr_weather.locationforecast.Forecast
+.. autoclass:: yr_weather.data.locationforecast.Forecast
    :members:
    :undoc-members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastTime
+.. autoclass:: yr_weather.data.locationforecast.ForecastTime
    :members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastFuture
+.. autoclass:: yr_weather.data.locationforecast.ForecastFuture
    :members:
 
 Dataclasses
 -----------
-.. autoclass:: yr_weather.locationforecast.ForecastGeometry
+.. autoclass:: yr_weather.data.locationforecast.ForecastGeometry
    :members:
    :undoc-members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastUnits
+.. autoclass:: yr_weather.data.locationforecast.ForecastUnits
    :members:
    :undoc-members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastTimeDetails
+.. autoclass:: yr_weather.data.locationforecast.ForecastTimeDetails
    :members:
    :undoc-members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastFutureSummary
+.. autoclass:: yr_weather.data.locationforecast.ForecastFutureSummary
    :members:
    :undoc-members:
 
-.. autoclass:: yr_weather.locationforecast.ForecastFutureDetails
+.. autoclass:: yr_weather.data.locationforecast.ForecastFutureDetails
    :members:
    :undoc-members:
