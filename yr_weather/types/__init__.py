@@ -1,1 +1,0 @@
-"""Types for yr-weather."""

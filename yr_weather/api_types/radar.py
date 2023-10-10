@@ -1,4 +1,4 @@
-"""Types for radar data."""
+"""MET API types for radar data."""
 
 from typing import Literal
 

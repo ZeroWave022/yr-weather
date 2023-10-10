@@ -1,9 +1,9 @@
-"""Types for complete Locationforecasts."""
+"""MET API types for location forecasts."""
 
 from typing import TypedDict, List
 
 
-class CompleteUnits(TypedDict):
+class APIForecastUnits(TypedDict):
     """Units that can be used in the forecast data"""
 
     air_pressure_at_sea_level: str
@@ -32,7 +32,7 @@ class CompleteUnits(TypedDict):
     wind_speed_percentile_90: str
 
 
-class CompleteInstantDetails(TypedDict):
+class APIForecastInstantDetails(TypedDict):
     """Details of instant weather data for a time"""
 
     air_pressure_at_sea_level: float
@@ -54,15 +54,15 @@ class CompleteInstantDetails(TypedDict):
     wind_speed_percentile_90: float
 
 
-class CompleteFutureSummary(TypedDict):
+class APIForecastFutureSummary(TypedDict):
     """Summary for next x hours for a time"""
 
     symbol_code: str
 
 
 # Any details may be included, and it's unpredictable which.
-# Use the same attributes as CompleteUnits, but mark it as potentially incomplete (total=False).
-class CompleteFutureDetails(TypedDict, total=False):
+# Use the same attributes as APIForecastUnits, but mark it as potentially incomplete (total=False).
+class APIForecastFutureDetails(TypedDict, total=False):
     """Instant details for a forecast"""
 
     air_pressure_at_sea_level: float
@@ -91,59 +91,59 @@ class CompleteFutureDetails(TypedDict, total=False):
     wind_speed_percentile_90: float
 
 
-class CompleteInstantData(TypedDict):
+class APIForecastInstantData(TypedDict):
     """Instant data for a forecast"""
 
-    details: CompleteInstantDetails
+    details: APIForecastInstantDetails
 
 
-class CompleteFutureData(TypedDict):
+class APIForecastFutureData(TypedDict):
     """Data for next x hours for a time"""
 
-    summary: CompleteFutureSummary
-    details: CompleteFutureDetails
+    summary: APIForecastFutureSummary
+    details: APIForecastFutureDetails
 
 
-class CompleteTimeData(TypedDict):
+class APIForecastTimeData(TypedDict):
     """Data for one time from a timeseries"""
 
-    instant: CompleteInstantData
-    next_1_hours: CompleteFutureData
-    next_6_hours: CompleteFutureData
-    next_12_hours: CompleteFutureData
+    instant: APIForecastInstantData
+    next_1_hours: APIForecastFutureData
+    next_6_hours: APIForecastFutureData
+    next_12_hours: APIForecastFutureData
 
 
-class CompleteTime(TypedDict):
+class APIForecastTime(TypedDict):
     """A time in the forecast timeseries"""
 
     time: str
-    data: CompleteTimeData
+    data: APIForecastTimeData
 
 
-class CompleteMeta(TypedDict):
+class APIForecastMeta(TypedDict):
     """Forecast metadata"""
 
     updated_at: str
-    units: CompleteUnits
+    units: APIForecastUnits
 
 
-class CompleteProperties(TypedDict):
+class APIForecastProperties(TypedDict):
     """Forecast properties"""
 
-    meta: CompleteMeta
-    timeseries: List[CompleteTime]
+    meta: APIForecastMeta
+    timeseries: List[APIForecastTime]
 
 
-class CompleteGeometry(TypedDict):
+class APIForecastGeometry(TypedDict):
     """Geometry data"""
 
     type: str
     coordinates: List[int]
 
 
-class CompleteForecast(TypedDict):
-    """Complete forecast data"""
+class APIForecast(TypedDict):
+    """APIForecast forecast data"""
 
     type: str
-    geometry: CompleteGeometry
-    properties: CompleteProperties
+    geometry: APIForecastGeometry
+    properties: APIForecastProperties

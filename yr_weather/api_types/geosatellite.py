@@ -1,4 +1,4 @@
-"""Types for geosatellite data."""
+"""MET API types for geosatellite data."""
 
 from typing import Literal
 

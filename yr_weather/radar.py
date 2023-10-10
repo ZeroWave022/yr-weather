@@ -11,7 +11,7 @@ from .data.radar import (
     RadarGlobalStatus,
     RadarStatus,
 )
-from .types.radar import (
+from .api_types.radar import (
     RadarArea,
     RadarType,
     RadarContentType,

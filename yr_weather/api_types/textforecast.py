@@ -1,4 +1,4 @@
-"""Types for text forecasts."""
+"""MET API types for text forecasts."""
 
 from typing import TypedDict, Union, List
 

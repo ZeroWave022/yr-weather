@@ -3,7 +3,7 @@
 from typing import Optional, Literal, List
 from dataclasses import dataclass
 
-from yr_weather.types.radar import RadarArea, RadarContentType
+from yr_weather.api_types.radar import RadarArea, RadarContentType
 
 
 @dataclass

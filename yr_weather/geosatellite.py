@@ -4,7 +4,7 @@ from typing import Optional, Literal, get_args
 import requests
 from .client import APIClient
 
-from .types.geosatellite import SatArea
+from .api_types.geosatellite import SatArea
 
 
 class Geosatellite(APIClient):

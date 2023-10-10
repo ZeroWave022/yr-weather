@@ -6,7 +6,7 @@ from xml.parsers.expat import ExpatError
 import xmltodict
 from .client import APIClient
 
-from .types.textforecast import TextForecasts, TextAreas
+from .api_types.textforecast import TextForecasts, TextAreas
 
 
 class Textforecast(APIClient):
