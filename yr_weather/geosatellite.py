@@ -68,7 +68,9 @@ class Geosatellite(APIClient):
 
         if not request.ok:
             raise requests.HTTPError(
-                f"Unsuccessful response received: {request.status_code} {request.reason}."
+                f"Unsuccessful response received: {request.status_code} {request.reason}.",
+                request=None,
+                response=request,
             )
 
         return request
