@@ -85,3 +85,28 @@ Getting future weather predictions
     expected_temp = next_6_hrs.details.air_temperature # This value may be None, if no value is received from the API
 
     print(f"In the next 6 hours, the expected temperature is {expected_temp} °C")
+
+Handling possible :class:`None` values:
+
+.. code-block:: python
+
+    # Full weather data for Oslo, Norway.
+    forecast = my_client.get_forecast(59.91, 10.75)
+
+    forecast_now = forecast.now()
+
+    # A ForecastFuture dataclass storing info about the weather in 6 hours
+    next_6_hrs = forecast_now.next_6_hours
+
+    expected_temp = next_6_hrs.details.air_temperature # This value may be None, if no value is received from the API
+
+    if expected_temp is not None:
+        print(f"In the next 6 hours, the expected temperature is {expected_temp} °C")
+    else:
+        min_temp = next_6_hrs.details.air_temperature_min
+        max_temp = next_6_hrs.details.air_temperature_max
+
+        if min_temp is not None and max_temp is not None:
+            print(f"In the next 6 hours, the expected temperature is between {min_temp} °C and {max_temp} °C")
+        else:
+            print("No air temperature value was received from the API.")
