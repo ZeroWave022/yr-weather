@@ -1,6 +1,6 @@
 """Classes storing data used by yr_weather.locationforecast"""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, List
 from dataclasses import dataclass, fields
 
@@ -198,7 +198,9 @@ class Forecast:
 
     def _conv_to_nearest_hour(self, date: datetime) -> datetime:
         if date.minute >= 30:
-            return date.replace(microsecond=0, second=0, minute=0, hour=date.hour + 1)
+            return date.replace(
+                microsecond=0, second=0, minute=0, hour=date.hour
+            ) + timedelta(hours=1)
 
         return date.replace(microsecond=0, second=0, minute=0)
 
