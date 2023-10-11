@@ -156,7 +156,7 @@ class Radar(APIClient):
 
         Returns
         -------
-        :class:`.RadarStatus`
+        :class:`.RadarGlobalStatus`
             A dataclass with statuses of radars.
         """
         url = self._base_url + "status"
