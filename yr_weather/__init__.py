@@ -1,21 +1,8 @@
-"""A Python module for interaction with the Yr API.
+"""A Python module for interaction with the MET API.
 
-To get started, initialize a Locationforecast client like so:
-
-.. code-block:: python
-    
-    import yr_weather
-
-    headers = {
-        "User-Agent": "Your User-Agent"
-    }
-
-    my_client = yr_weather.Locationforecast(headers=headers)
-
-For valid user agents, please see:
-https://api.met.no/doc/TermsOfService
-
-Using ``my_client``, you can receive forecasts for specified locations, get the air temperature, and more.
+yr_weather supports multiple MET API products.
+Please visit the docs to learn more:
+https://yr-weather.readthedocs.io/en/latest/
 """
 
 from .locationforecast import Locationforecast

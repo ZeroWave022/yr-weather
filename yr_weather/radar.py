@@ -35,6 +35,9 @@ class Radar(APIClient):
     ) -> requests.Response:
         """Get a radar image (png) or animation (gif).
 
+        For examples of usage, please see the docs:
+        https://yr-weather.readthedocs.io/
+
         For more information about what arguments are valid, please see:
         https://api.met.no/weatherapi/radar/2.0/documentation
 
@@ -53,45 +56,6 @@ class Radar(APIClient):
         -------
         :class:`requests.Response`
             A Response class, enabling for further saving or managing of the data received from the open stream.
-
-        Examples
-        --------
-
-        Example 1: Basic usage:
-
-        .. code-block:: python
-
-            import yr_weather
-
-            radar = yr_weather.Radar()
-
-            result = radar.get_radar("central_norway", "5level_reflectivity", "image")
-
-            with open("image.png", "wb") as f:
-                for chunk in result:
-                    f.write(chunk)
-
-        Example 2. Getting a radar image from a few hours back:
-
-        .. code-block:: python
-
-            import yr_weather
-            from datetime import datetime
-
-            radar = yr_weather.Radar()
-
-            # Replace with your time
-            time_now = datetime(2023, 1, 20, 12, 00, 00)
-            time_str = time_now.isoformat(timespec="seconds") + "Z"
-
-            result = radar.get_radar("central_norway", "5level_reflectivity", "image", time_str)
-
-            if result.status_code != 404:
-                with open("image.png", "wb") as f:
-                    for chunk in result:
-                        f.write(chunk)
-            else:
-                print("Couldn't get this radar image/animation!")
         """
         area_args = list(get_args(RadarArea))
         type_args = list(get_args(RadarType))
