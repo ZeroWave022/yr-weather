@@ -1,11 +1,6 @@
 Types: Sunrise
 ==============
 
-.. automodule:: yr_weather.types.sunrise
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Type aliases
 ------------
 

@@ -1,11 +1,6 @@
 Types: Radar
 ============
 
-.. automodule:: yr_weather.types.geosatellite
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Type aliases
 ------------
 
