@@ -11,4 +11,3 @@ The :class:`Textforecast` class is used for interacting with the MET.no `Textfor
    
    Examples <examples>
    API <api>
-   Types <types>
