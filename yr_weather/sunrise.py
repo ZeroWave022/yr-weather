@@ -13,6 +13,10 @@ class Sunrise(APIClient):
     """A client for interacting with the Yr Sunrise API."""
 
     def __init__(self, headers, use_cache=True) -> None:
+        header_keys = [key.lower() for key in headers]
+        if "user-agent" not in header_keys:
+            raise ValueError("A custom 'User-Agent' is required in the 'headers' dict.")
+
         super().__init__(headers, use_cache)
 
         self._base_url += "sunrise/3.0/"
