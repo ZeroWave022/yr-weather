@@ -3,13 +3,13 @@
 from typing import TypedDict, Union, List
 
 
-class Meta(TypedDict):
+class APIMeta(TypedDict):
     """Text forecast metadata"""
 
     licenseurl: str
 
 
-class ForecastArea(TypedDict):
+class APIForecastArea(TypedDict):
     """A text forecast for an area"""
 
     name: str
@@ -17,28 +17,32 @@ class ForecastArea(TypedDict):
     text: str
 
 
-class ForecastType(TypedDict):
-    """The type of text forecast"""
+class APIForecastWrapper(TypedDict):
+    """The wrapper for a text forecast location"""
 
     name: str
-    location: List[ForecastArea]
+    location: List[APIForecastArea]
 
 
-# Use alternative syntax to allow 'from' to be typed.
-TimedForecast = TypedDict(
-    "TimedForecast",
-    {"from": str, "to": str, "forecasttype": Union[ForecastType, List[ForecastType]]},
+# Use alternative syntax to allow the 'from' key to be typed.
+APITimedForecast = TypedDict(
+    "APITimedForecast",
+    {
+        "from": str,
+        "to": str,
+        "forecasttype": Union[APIForecastWrapper, List[APIForecastWrapper]],
+    },
 )
 
 
-class TextForecasts(TypedDict):
+class APITextForecasts(TypedDict):
     """Text forecasts for areas"""
 
-    meta: Meta
-    time: List[TimedForecast]
+    meta: APIMeta
+    time: List[APITimedForecast]
 
 
-class TextArea(TypedDict):
+class APITextArea(TypedDict):
     """An area with a text forecast"""
 
     id: str
@@ -46,7 +50,7 @@ class TextArea(TypedDict):
     polygon: str
 
 
-class TextAreas(TypedDict):
+class APITextAreas(TypedDict):
     """Areas with text forecasts"""
 
-    area: List[TextArea]
+    area: List[APITextArea]

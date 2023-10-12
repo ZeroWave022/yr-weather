@@ -1,12 +1,12 @@
 """A module with classes for the Textforecast API."""
 
-from typing import Literal, Union
-import warnings
+from typing import Literal, List
 from xml.parsers.expat import ExpatError
 import xmltodict
 from .client import APIClient
 
-from .api_types.textforecast import TextForecasts, TextAreas
+from .data.textforecast import TextForecasts, TextForecastArea
+from .api_types.textforecast import APITextArea
 
 
 class Textforecast(APIClient):
@@ -22,7 +22,7 @@ class Textforecast(APIClient):
         forecast: Literal[
             "landoverview", "coast_en", "coast_no", "sea_en", "sea_no", "sea_wmo"
         ],
-    ) -> Union[TextForecasts, str]:
+    ) -> TextForecasts:
         """Get text forcasts for a selected area.
 
         Parameters
@@ -32,9 +32,8 @@ class Textforecast(APIClient):
 
         Returns
         -------
-        :class:`.TextForecasts` | :class:`str`
-            A typed dict with text forecasts for the selected area, defined in the forecast parameter.
-            If XML conversion fails, the response text for the request is returned instead.
+        :class:`.TextForecasts`
+            A class with text forecasts for the selected area defined in the forecast parameter.
         """
         forecast_types = [
             "landoverview",
@@ -55,18 +54,16 @@ class Textforecast(APIClient):
 
         try:
             parsed = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")
-        except ExpatError:
-            warnings.warn(
-                "Parsing XML failed (this could be caused by a non-200 status code).\nFalling back to response text."
-            )
-            return request.text
+        except ExpatError as exc:
+            raise RuntimeError(
+                "Parsing XML failed (this could be caused by a bad status code or wrong XML format)."
+            ) from exc
 
-        forecasts: TextForecasts = parsed["textforecast"]
-        return forecasts
+        return TextForecasts(parsed["textforecast"], forecast)
 
     def get_areas(
         self, area_type: Literal["land", "sea", "coast"]
-    ) -> Union[TextAreas, str]:
+    ) -> List[TextForecastArea]:
         """Get available areas and their polygons.
 
         Parameters
@@ -76,9 +73,8 @@ class Textforecast(APIClient):
 
         Returns
         -------
-        :class:`.TextAreas` | :class:`str`
-            A typed dict with land, sea or coast areas, their polygons and names.
-            If XML conversion fails, the response text for the request is returned instead.
+        list[:class:`TextForecastArea`]
+            A list of land, coast or sea areas, their polygons and names.
         """
         area_types = ["land", "sea", "coast"]
         if area_type not in area_types:
@@ -92,11 +88,19 @@ class Textforecast(APIClient):
 
         try:
             parsed = xmltodict.parse(request.text, attr_prefix="", cdata_key="text")
-        except ExpatError:
-            warnings.warn(
-                "Parsing XML failed (this could be caused by a non-200 status code).\nFalling back to response text."
-            )
-            return request.text
+        except ExpatError as exc:
+            raise RuntimeError(
+                "Parsing XML failed (this could be caused by a bad status code or wrong XML format)."
+            ) from exc
 
-        areas: TextAreas = parsed["areas"]
+        raw_areas: List[APITextArea] = parsed["areas"]["area"]
+
+        areas: List[TextForecastArea] = []
+        for area in raw_areas:
+            areas.append(
+                TextForecastArea(
+                    id=area["id"], name=area["areaDesc"], polygon=area["polygon"]
+                )
+            )
+
         return areas
