@@ -45,7 +45,7 @@ class TextForecastLocations:
 
         Returns
         -------
-        Optional[:class:`TextForecastArea`]
+        Optional[:class:`ForecastLocation`]
             The location which has been found, or None if not found.
         """
         found_areas = list(filter(lambda loc: loc["name"] == location, self._raw))
@@ -116,7 +116,12 @@ class TextForecasts:
             )
 
     def now(self) -> TextForecastTime:
-        """Get the TextForecastTime which applies now"""
+        """Get the TextForecastTime which applies now
+
+        Returns
+        -------
+        Optional[:class:`.TextForecastTime`]
+        """
         # The times from textforecast seem to be given in Europe/Oslo time
         oslo_timezone = pytz.timezone("Europe/Oslo")
         now = datetime.now(oslo_timezone)
