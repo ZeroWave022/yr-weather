@@ -37,6 +37,9 @@ At the time of writing, text forecasts for land are only available in Norwegian.
     # Example output:
     # Vestlig bris, frisk bris utsatte steder, liten kuling på kysten. Nordøst i Innlandet fylke enkelte sludd- og regnbyger, ellers oppholdsvær og perioder med sol.
 
+    # Not sure which locations are available in the forecast you received? Use TextForecastLocations.names
+    locations = forecast_now.locations.names
+
 Getting available areas
 -----------------------
 
