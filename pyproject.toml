@@ -8,11 +8,11 @@ dynamic = ["version"]
 authors = [
     { name = "ZeroWave022" }
 ]
-description = "Retrieve weather data from Yr (by the Norwegian Meteorogical Institute) easily."
+description = "Retrieve weather data from Norwegian Meteorological Institute's APIs easily."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
