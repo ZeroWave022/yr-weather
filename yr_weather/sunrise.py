@@ -29,14 +29,14 @@ class Sunrise(APIClient):
 
         # Ensure correct variable types.
         if not isinstance(date, str):
-            raise ValueError("Type of 'date' must be str.")
+            raise TypeError("Type of 'date' must be str.")
 
         if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)):
-            raise ValueError("Type of 'lat' and 'lon' must be int or float.")
+            raise TypeError("Type of 'lat' and 'lon' must be int or float.")
 
         if offset:
             if not isinstance(offset, str):
-                raise ValueError("Type of 'offset' must be str.")
+                raise TypeError("Type of 'offset' must be str.")
 
             # Ensure offset is valid.
             if not self._ensure_valid_offset(offset):
