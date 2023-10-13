@@ -75,14 +75,6 @@ yr_weather.Locationforecast(headers=headers, use_cache=False)
 
 MET's Terms of Service encourage using caching to avoid extra load on the network. Therefore, disabling caching and not implementing it yourself is not recommended.
 
-# Future objectives (TODOs)
-
-- [x] Add Read the Docs documentation
-- [ ] Add further features from MET's API
-- [ ] Make sure Python >=3.8 is supported
-- [ ] Add linter
-- [ ] Add type checker
-
 # License
 
 This project is licensed under the [Apache License 2.0](https://github.com/ZeroWave022/yr-weather/blob/main/LICENSE).
