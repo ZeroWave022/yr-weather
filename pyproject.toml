@@ -27,6 +27,7 @@ classifiers = [
 dependencies = [
     "requests",
     "requests-cache",
+    "pytz",
     "xmltodict"
 ]
 
